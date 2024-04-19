@@ -1,1 +1,3 @@
 # Cosmic-Ascension
+
+Install pygame
