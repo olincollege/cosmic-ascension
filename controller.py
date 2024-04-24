@@ -30,10 +30,11 @@ class Controller(pygame.sprite.Sprite):
         if self._velocity.y > 0:
             hits = pygame.sprite.spritecollide(self._model._player, self._model._platforms, False)
             if hits:
-                self._velocity.y = 0
-                self._model._player._position.y = hits[0].rect.top - 30
+                if self._model._player._position.y + 30 < hits[0].rect.bottom:
+                    self._velocity.y = 0
+                    self._model._player._position.y = hits[0].rect.top - 30
     def jump(self):
         hits = pygame.sprite.spritecollide(self._model._player, self._model._platforms, False)
         if hits:
-           self._velocity.y = -15
+           self._velocity.y = -30
 

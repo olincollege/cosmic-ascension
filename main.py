@@ -22,6 +22,9 @@ model = Model(platforms)
 view = View(model)
 controller = Controller(model)
 
+for x in range(random.randint(5, 6)):
+    platform = Platform()
+    platforms.add(platform)
 
 while True:
     for event in pygame.event.get():
@@ -30,7 +33,6 @@ while True:
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                print("break")
                 controller.jump()
     controller.move()
     displaysurface.fill((0,0,0))
