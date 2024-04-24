@@ -14,7 +14,9 @@ FramePerSec = pygame.time.Clock()
 displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
 vector = pygame.math.Vector2
 
-ground = Platform(surf=pygame.Surface((WIDTH, 20)), color=(255,0,0), topleft=(0, HEIGHT - 10))
+ground = Platform(
+    surf=pygame.Surface((WIDTH, 20)), color=(255, 0, 0), topleft=(0, HEIGHT - 10)
+)
 platforms = pygame.sprite.Group()
 platforms.add(ground)
 
@@ -35,8 +37,8 @@ while True:
             if event.key == pygame.K_SPACE:
                 controller.jump()
     controller.move()
-    
-    displaysurface.fill((0,0,0))
+
+    displaysurface.fill((0, 0, 0))
     view.draw(displaysurface)
     pygame.display.update()
     FramePerSec.tick(60)
