@@ -23,7 +23,10 @@ class Platform(pygame.sprite.Sprite):
             topleft = (random.randint(0,450),random.randint(0, 400))
         else:
             topleft = topleft
-        self.rect = self._surf.get_rect(topleft=topleft)
+        self._rect = self._surf.get_rect(topleft=topleft)
+    @property
+    def rect(self):
+        return self._rect
 
 class Player(pygame.sprite.Sprite):
     def __init__(self) -> None:
@@ -31,8 +34,14 @@ class Player(pygame.sprite.Sprite):
         self._position = vector(10, 310)
         self._surf = pygame.Surface((30, 30))
         self._surf.fill((255,255,0))
-        self.rect = self._surf.get_rect(topleft=self._position)
+        self._rect = self._surf.get_rect(topleft=self._position)
     def update(self):
         self._surf = pygame.Surface((30, 30))
         self._surf.fill((255,255,0))
-        self.rect = self._surf.get_rect(topleft=self._position)
+        self._rect = self._surf.get_rect(topleft=self._position)
+    @property
+    def position(self):
+        return self._position
+    @property
+    def rect(self):
+        return self._rect

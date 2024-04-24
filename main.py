@@ -35,6 +35,7 @@ while True:
             if event.key == pygame.K_SPACE:
                 controller.jump()
     controller.move()
+    
     displaysurface.fill((0,0,0))
     view.draw(displaysurface)
     pygame.display.update()
