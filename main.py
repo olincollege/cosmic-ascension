@@ -37,7 +37,12 @@ while True:
             if event.key == pygame.K_SPACE:
                 controller.jump()
     controller.move()
-
+    if model._player.rect.top <= HEIGHT / 3:
+        model._player.position.y += abs(controller._velocity.y)
+        for plat in platforms:
+            plat.rect.y += abs(controller._velocity.y)
+            if plat.rect.top >= HEIGHT:
+                plat.kill()
     displaysurface.fill((0, 0, 0))
     view.draw(displaysurface)
     pygame.display.update()
