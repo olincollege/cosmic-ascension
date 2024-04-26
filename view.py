@@ -41,3 +41,4 @@ class View:
         displaysurface.blit(self._model.player.surf, self._model.player.rect)
         for platform in self._model.platforms:
             displaysurface.blit(platform.surf, platform.rect)
+        pygame.display.update()

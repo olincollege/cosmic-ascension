@@ -53,9 +53,7 @@ class Game:
         self._fps = 60
         self._screen = pygame.display.set_mode((WIDTH, HEIGHT))
         ground = Platform(
-            surf=pygame.Surface((WIDTH, 20)),
-            color=(255, 0, 0),
-            topleft=(0, HEIGHT - 10),
+            surf=pygame.Surface((200, 20)), color=(255, 0, 0), center=(200, 445)
         )
         platforms = pygame.sprite.Group()
         platforms.add(ground)
@@ -85,8 +83,8 @@ class Game:
             none
         """
         while True:
-            self._model.platform_generation()
             self.camera()
+            self._model.platform_generation()
             self._view.draw(self._screen)
             self._controller.update()
             self._model.update(self._controller._left_right, self._controller._jumping)
