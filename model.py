@@ -1,24 +1,62 @@
+"""
+This module creates a class to interact with data and the controller of
+user inputs. It acts as the Model section of MVC architecture.
+"""
+
 import pygame
 from pygame.locals import *
 import sys
 import random
 import math
+from controller import Controller
 
 
 vector = pygame.math.Vector2
 
 
 class Model:
-    def __init__(self, platforms) -> None:
+    """
+    Class that acts as Model part of MVC architecture.
+    Updates the data related to the game play.
+
+    Attributes:
+        _gravity: A vector representing the acceleration associated
+            with gravity that acts on the character.
+        _friction: An int representing the value friction associated
+            with the characters interactions with objects in game.
+        _player: An instance of the Player class, with the gravity
+            and friction attributes applied to it.
+        _platforms: Platform instances that are present in the model.
+    """
+
+    def __init__(self, platforms, controller) -> None:
+        """
+        Initializes the model.
+
+        Args:
+            platforms: The intial Platform instances to start the game with.
+            controller: An instance of the Controller class
+        """
         self._gravity = vector(0, 0.5)
         self._friction = 0.12
         self._player = Player(self._gravity, self._friction)
         self._platforms = platforms
+        self._controller = controller
 
-    def update(self, x_acceleration, jumping):
+    def update(self, x_acceleration, jumping=False):
+        """
+        Updates the character based on a given horizontal acceleration
+        and jumps acting on it.
+
+        Args:
+            x_acceleration: An int representing how fast the character accelerates
+            in a horizontal direction.
+        """
         self._player.move(x_acceleration)
         hits = pygame.sprite.spritecollide(self._player, self._platforms, False)
-        if hits and jumping:
+        print(f"hits: {hits}")
+        print(f"is jumping? {self._controller.jumping}")
+        if hits != [] and self._controller.jumping is True:
             self._player.set_velocity(vector(self._player.velocity.x, -15))
         else:
             jumping = False
@@ -97,7 +135,25 @@ class Model:
 
 
 class Platform(pygame.sprite.Sprite):
-    def __init__(self, surf=None, color=(0, 255, 0), center=None) -> None:
+    """
+    Creates a platform for a sprite to interact with.
+
+    Attributes:
+        _surf: A pygame surface object that acts as a platform
+            in gameplay.
+        _rect: A rectangle object representing the area that
+            the platform occupies.
+    """
+
+    def __init__(self, surf=None, color=(0, 255, 0), topleft=None) -> None:
+        """
+        Initializes the platforms.
+
+        Args:
+            surf: A surface representing platforms. Defaults to None.
+            color: A tuple representing the platform RBG color code. Defaults to (0, 255, 0).
+            topleft: A tuple representing the top left platform location. Defaults to None.
+        """
         super().__init__()
         if surf is None:
             self._surf = pygame.Surface((random.randint(50, 100), 12))
@@ -134,7 +190,36 @@ class Platform(pygame.sprite.Sprite):
 
 
 class Player(pygame.sprite.Sprite):
+    """
+    A class to generate and dictate actions of the game
+    character sprite.
+
+    Attributes:
+        _gravity: A vector representing the acceleration associated
+            with gravity that acts on the character.
+        _friction: An int representing the value friction associated
+            with the characters interactions with objects in game.
+        _acceleration: A vector representing the acceleration
+            acting on the character in any direction.
+        _velocity: A vector representing the velocity of the character.
+        _position: A vector representing the position of the character in
+            the game window.
+        _surf: A pygame surface object that acts as a platform
+            in gameplay.
+        _rect: A rectangle object representing the area that
+            the platform occupies.
+    """
+
     def __init__(self, gravity, friction) -> None:
+        """
+        Initializes the character.
+
+        Args:
+            gravity: A vector representing the acceleration
+                on a character due to gravity.
+            friction: An int representing the friction between character
+                and platforms.
+        """
         super().__init__()
         self._gravity = gravity
         self._friction = friction
@@ -146,18 +231,44 @@ class Player(pygame.sprite.Sprite):
         self._rect = self._surf.get_rect(topleft=self._position)
 
     def update(self):
+        """
+        Updates the character surface, shape, and color.
+
+        Args:
+            none
+        """
         self._surf = pygame.Surface((30, 30))
         self._surf.fill((255, 255, 0))
         self._rect = self._surf.get_rect(topleft=self._position)
 
     def set_position(self, position):
+        """
+        Sets the position of the player.
+
+        Args:
+            position: A tuple representing the x and y location
+                of the character sprite.
+        """
         self._position = position
 
     def set_velocity(self, velocity):
+        """
+        Sets the velocity of the player sprite.
+
+        Args:
+            velocity: A tuple representing the velocity
+                in each direction for the sprite.
+        """
         self._velocity = velocity
 
     def move(self, x_acceleration):
-        # print(self._velocity)
+        """
+        Dictates the horizontal motion of the player sprite.
+
+        Args:
+            x_acceleration: An int representing horizontal
+                acceleration of the character.
+        """
         self._acceleration = self._gravity
         self._acceleration.x = x_acceleration
         self._acceleration.x -= self._velocity.x * 0.12
