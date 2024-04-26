@@ -1,48 +1,60 @@
-import pygame
-from pygame.locals import *
-import sys
-import random
-from view import View
-from model import Model
-from model import Platform
-from controller import Controller
+from game import Game
 
-WIDTH = 450
-HEIGHT = 400
+if __name__ == '__main__':
+    game = Game()
+    game.start()
 
-FramePerSec = pygame.time.Clock()
-displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
-vector = pygame.math.Vector2
+# import pygame
+# from pygame.locals import *
+# import sys
+# import random
+# from view import View
+# from model import Model
+# from model import Platform
+# from controller import Controller
 
-ground = Platform(surf=pygame.Surface((WIDTH, 20)), color=(255,0,0), topleft=(0, HEIGHT - 10))
-platforms = pygame.sprite.Group()
-platforms.add(ground)
+# WIDTH = 450
+# HEIGHT = 400
 
-model = Model(platforms)
-view = View(model)
-controller = Controller(model)
+# FramePerSec = pygame.time.Clock()
+# displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
+# vector = pygame.math.Vector2
 
-# for x in range(random.randint(5, 6)):
-#     platform = Platform()
-#     platforms.add(platform)
+# ground = Platform(surf=pygame.Surface((WIDTH, 20)), color=(255,0,0), topleft=(0, HEIGHT - 10))
+# platforms = pygame.sprite.Group()
+# platforms.add(ground)
 
-while True:
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                controller.jump()
-    model.platform_generation()
-    controller.move()
-    if model._player.rect.top <= HEIGHT / 3:
-        model._player.position.y += abs(controller._velocity.y)
-        for plat in platforms:
-            plat.rect.y += abs(controller._velocity.y)
-            if plat.rect.top >= HEIGHT:
-                plat.kill()
-    displaysurface.fill((0,0,0))
-    view.draw(displaysurface)
-    pygame.display.update()
-    FramePerSec.tick(60)
+# model = Model(platforms)
+# view = View(model)
+# controller = Controller(model)
+
+# # for x in range(random.randint(5, 6)):
+# #     platform = Platform()
+# #     platforms.add(platform)
+
+# while True:
+#     # print(model.platforms)
+#     for platform in model.platforms:
+#         print(platform.rect)
+#     for event in pygame.event.get():
+#         if event.type == QUIT:
+#             pygame.quit()
+#             sys.exit()
+#         if event.type == pygame.KEYDOWN:
+#             if event.key == pygame.K_SPACE:
+#                 controller.jump()
+#     plat = Platform(surf=pygame.Surface((10, 5)), topleft=(0, 430))
+#     model._platforms.add(plat)
+#     # model.platform_generation()
+#     controller.move()
+#     if model.player.rect.top <= HEIGHT / 3:
+#         model.player.position.y += abs(controller._velocity.y)
+#         for plat in model.platforms:
+#             plat.rect.y += abs(controller._velocity.y)
+#             if plat.rect.top >= HEIGHT:
+#                 plat.kill()
+#     # print(pygame.sprite.spritecollide(model.player, model.platforms, False))
+#     displaysurface.fill((0,0,0))
+#     view.draw(displaysurface)
+#     pygame.display.update()
+#     FramePerSec.tick(60)
