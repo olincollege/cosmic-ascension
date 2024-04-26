@@ -42,6 +42,7 @@ class Model:
         self._player = Player(self._gravity, self._friction)
         self._platforms = platforms
         self._controller = controller
+        self._score = 0
 
     def update(self, x_acceleration, jumping):
         """
@@ -118,7 +119,8 @@ class Model:
             if pygame.sprite.spritecollideany(platform, self._platforms):
                 continue
             self._platforms.add(platform)
-
+    def increase_score(self):
+        self._score += 1
     @property
     def player(self):
         """
@@ -140,6 +142,16 @@ class Model:
             The platforms attribute of the model.
         """
         return self._platforms
+    @property
+    def score(self):
+        """
+        Returns the score of the game
+        Args:
+            none
+        Returns:
+            The score attribute
+        """
+        return self._score
 
 
 class Platform(pygame.sprite.Sprite):

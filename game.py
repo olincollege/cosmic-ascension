@@ -75,7 +75,8 @@ class Game:
                 plat.set_rect(plat.rect.x, plat.rect.y + abs(self._model.player.velocity.y))
                 if plat.rect.top >= HEIGHT:
                     plat.kill()
-
+            return True
+        return False
     def start(self):
         """
         Dictates the start of game play.
@@ -84,9 +85,11 @@ class Game:
             none
         """
         while True:
-            self.camera()
+            if self.camera():
+                self._model.increase_score()
             self._model.platform_generation()
             self._view.draw(self._screen)
+            self._view.score(self._screen)
             self._controller.update()
             self._model.update(self._controller._left_right, self._controller._jumping)
             pygame.display.update()
