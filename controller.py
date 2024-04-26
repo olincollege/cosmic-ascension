@@ -29,3 +29,9 @@ class Controller():
                     sys.exit()
         
 
+    def jump(self):
+        hits = pygame.sprite.spritecollide(
+            self._model._player, self._model._platforms, False
+        )
+        if hits:
+            self._velocity.y = -30

@@ -6,7 +6,8 @@ import random
 
 vector = pygame.math.Vector2
 
-class Model():
+
+class Model:
     def __init__(self, platforms) -> None:
         self._gravity = vector(0, 0.5)
         self._friction = 0.12
@@ -64,7 +65,7 @@ class Platform(pygame.sprite.Sprite):
             self._surf = surf
         self._surf.fill(color)
         if topleft is None:
-            topleft = (random.randint(0,450),random.randint(0, 400))
+            topleft = (random.randint(0, 450), random.randint(0, 400))
         else:
             topleft = topleft
         self._rect = self._surf.get_rect(topleft=topleft)
@@ -100,12 +101,12 @@ class Player(pygame.sprite.Sprite):
         self._velocity = vector(0,0)
         self._position = vector(10, 310)
         self._surf = pygame.Surface((30, 30))
-        self._surf.fill((255,255,0))
+        self._surf.fill((255, 255, 0))
         self._rect = self._surf.get_rect(topleft=self._position)
 
     def update(self):
         self._surf = pygame.Surface((30, 30))
-        self._surf.fill((255,255,0))
+        self._surf.fill((255, 255, 0))
         self._rect = self._surf.get_rect(topleft=self._position)
     def set_position(self, position):
         self._position = position
