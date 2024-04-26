@@ -1,3 +1,9 @@
+"""
+This module contains the Controller class, intended to
+take user inputs and apply certain actions accordingly.
+It acts as the Controller section of MVC architecture.
+"""
+
 import pygame
 from pygame.locals import *
 import sys
@@ -7,12 +13,36 @@ vector = pygame.math.Vector2
 
 
 class Controller:
+    """
+    Dictates actions to be completed based on specified user inputs.
+
+    Attributes:
+        _jumping: A bool representing whether the character is jumping
+            or not.
+        _dead: A bool to indicate whether the character's status in the game,
+            either alive or dead.
+        _left_right: An int representing the horizontal acceleration of the
+            character.
+    """
+
     def __init__(self) -> None:
+        """
+        Initializes the default actions to be applied to the character.
+
+        Args:
+            none
+        """
         self._jumping = False
         self._dead = False
         self._left_right = 0
 
     def update(self):
+        """
+        Updates the actions on the player based on key events.
+
+        Args:
+            none
+        """
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
