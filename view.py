@@ -12,10 +12,8 @@ class View:
         self._model = model
 
     def draw(self, displaysurface):
-        displaysurface.fill((0,0,0))
+        displaysurface.fill((0, 0, 0))
         displaysurface.blit(self._model.player.surf, self._model.player.rect)
         for platform in self._model.platforms:
             displaysurface.blit(platform.surf, platform.rect)
-
-
-
+        pygame.display.update()
