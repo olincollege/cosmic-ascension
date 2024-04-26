@@ -6,6 +6,7 @@ from view import View
 from model import Model
 from model import Platform
 from controller import Controller
+
 WIDTH = 400
 HEIGHT = 450
 # display = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -21,16 +22,21 @@ HEIGHT = 450
 #             display.blit(surf, rect)
 #             pygame.display.update()
 
-class Game():
+
+class Game:
     def __init__(self) -> None:
         self._clock = pygame.time.Clock()
         self._fps = 60
         self._screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        ground = Platform(surf=pygame.Surface((WIDTH, 20)), color=(255,0,0), topleft=(0, HEIGHT - 10))
+        ground = Platform(
+            surf=pygame.Surface((WIDTH, 20)),
+            color=(255, 0, 0),
+            topleft=(0, HEIGHT - 10),
+        )
         platforms = pygame.sprite.Group()
         platforms.add(ground)
-        self._model = Model(platforms)
         self._controller = Controller()
+        self._model = Model(platforms, self._controller)
         self._view = View(self._model)
 
     def camera(self):
