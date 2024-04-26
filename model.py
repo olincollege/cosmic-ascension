@@ -123,6 +123,14 @@ class Platform(pygame.sprite.Sprite):
     """
 
     def __init__(self, surf=None, color=(0, 255, 0), topleft=None) -> None:
+        """
+        Initializes the platforms.
+
+        Args:
+            surf: A surface representing platforms. Defaults to None.
+            color: A tuple representing the platform RBG color code. Defaults to (0, 255, 0).
+            topleft: A tuple representing the top left platform location. Defaults to None.
+        """
         super().__init__()
         if surf is None:
             self._surf = pygame.Surface((random.randint(50, 100), 12))
@@ -181,11 +189,13 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, gravity, friction) -> None:
         """
-        Initializes the character
+        Initializes the character.
 
         Args:
-            gravity (_type_): _description_
-            friction (_type_): _description_
+            gravity: A vector representing the acceleration
+                on a character due to gravity.
+            friction: An int representing the friction between character
+                and platforms.
         """
         super().__init__()
         self._gravity = gravity
@@ -198,18 +208,44 @@ class Player(pygame.sprite.Sprite):
         self._rect = self._surf.get_rect(topleft=self._position)
 
     def update(self):
+        """
+        Updates the character surface, shape, and color.
+
+        Args:
+            none
+        """
         self._surf = pygame.Surface((30, 30))
         self._surf.fill((255, 255, 0))
         self._rect = self._surf.get_rect(topleft=self._position)
 
     def set_position(self, position):
+        """
+        Sets the position of the player.
+
+        Args:
+            position: A tuple representing the x and y location
+                of the character sprite.
+        """
         self._position = position
 
     def set_velocity(self, velocity):
+        """
+        Sets the velocity of the player sprite.
+
+        Args:
+            velocity: A tuple representing the velocity
+                in each direction for the sprite.
+        """
         self._velocity = velocity
 
     def move(self, x_acceleration):
-        # print(self._velocity)
+        """
+        Dictates the horizontal motion of the player sprite.
+
+        Args:
+            x_acceleration: An int representing horizontal
+                acceleration of the character.
+        """
         self._acceleration = self._gravity
         self._acceleration.x = x_acceleration
         self._acceleration.x -= self._velocity.x * 0.12
