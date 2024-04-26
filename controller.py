@@ -50,10 +50,7 @@ class Controller:
                 if event.key == pygame.K_RIGHT:
                     self._left_right = 0.5
                 if event.key == pygame.K_SPACE:
-                    print("jump")
                     self._jumping = True
-                else:
-                    self._jumping = False
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
                     self._jumping = False

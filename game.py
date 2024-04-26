@@ -39,9 +39,10 @@ class Game:
 
     def camera(self):
         if self._model.player.rect.top <= HEIGHT / 3:
-            self._model.player.position.y += abs(self._model.player.velocity.y)
+            new_position_y = self._model.player.position.y + abs(self._model.player.velocity.y)
+            self._model.player.set_position((self._model.player.position.x, new_position_y))
             for plat in self._model.platforms:
-                plat.rect.y += abs(self._model.player.velocity.y)
+                plat.set_rect(plat.rect.x, plat.rect.y + abs(self._model.player.velocity.y))
                 if plat.rect.top >= HEIGHT:
                     plat.kill()
 

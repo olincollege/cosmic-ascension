@@ -43,7 +43,7 @@ class Model:
         self._platforms = platforms
         self._controller = controller
 
-    def update(self, x_acceleration, jumping=False):
+    def update(self, x_acceleration, jumping):
         """
         Updates the character based on a given horizontal acceleration
         and jumps acting on it.
@@ -54,9 +54,7 @@ class Model:
         """
         self._player.move(x_acceleration)
         hits = pygame.sprite.spritecollide(self._player, self._platforms, False)
-        print(f"hits: {hits}")
-        print(f"is jumping? {self._controller.jumping}")
-        if hits != [] and self._controller.jumping is True:
+        if hits and jumping:
             self._player.set_velocity(vector(self._player.velocity.x, -15))
         else:
             jumping = False
@@ -83,7 +81,7 @@ class Model:
             # print(left)
             # print(right)
             velocity_x_max = math.sqrt(2 * 0.5 * (right - left))
-            print(velocity_x_max)
+            # print(velocity_x_max)
             max_y_height = (15**2) / (2 * self._gravity.y)
             # print(max_y_height)
             fall_time = math.sqrt(2 * max_y_height / self._gravity.y)
@@ -105,7 +103,7 @@ class Model:
             reach = random.randint(max_y_reach_point, center[1])
             center_platform_y = reach
             center_platform = (center_platform_x, center_platform_y)
-            print(center_platform)
+            # print(center_platform)
             platform = Platform(surf=surf, center=center_platform)
             if pygame.sprite.spritecollideany(platform,self._platforms):
                 continue
@@ -145,7 +143,7 @@ class Platform(pygame.sprite.Sprite):
             the platform occupies.
     """
 
-    def __init__(self, surf=None, color=(0, 255, 0), topleft=None) -> None:
+    def __init__(self, surf=None, color=(0, 255, 0), center=None) -> None:
         """
         Initializes the platforms.
 
@@ -165,7 +163,16 @@ class Platform(pygame.sprite.Sprite):
         else:
             center = center
         self._rect = self._surf.get_rect(center=center)
+    def set_rect(self, x, y):
+        """
+        Sets the rect of the platform.
 
+        Args:
+            position: A tuple representing the x and y location
+                of the platform sprite.
+        """
+        self._rect.x = x
+        self._rect.y = y
     @property
     def rect(self):
         """
