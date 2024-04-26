@@ -74,6 +74,12 @@ class Model:
         self._player.update()
 
     def platform_generation(self):
+        """
+        Controls generation of platforms during game play
+
+        Args:
+            none
+        """
         while len(self._platforms) < 10:
             latest_platform = len(self._platforms) - 1
             previous_platform = self._platforms.sprites()[latest_platform]
@@ -92,22 +98,26 @@ class Model:
             # print(max_x_distance)
             surf = pygame.Surface((random.randint(50, 100), 12))
             width = surf.get_width()
-            max_left_center = -max_x_distance + left + width/2
-            max_right_center = max_x_distance + right - width/2
+            max_left_center = -max_x_distance + left + width / 2
+            max_right_center = max_x_distance + right - width / 2
             if max_left_center < 0:
-                max_left_center = width/2 + 10
+                max_left_center = width / 2 + 10
             if max_right_center > 400:
-                max_right_center = 400 - width/2 - 10
-            center_platform_x = random.randint(int(max_left_center), int(max_right_center))
+                max_right_center = 400 - width / 2 - 10
+            center_platform_x = random.randint(
+                int(max_left_center), int(max_right_center)
+            )
             x_distance = abs(center_platform_x - center[0])
-            max_y_reach = (-15 / velocity_x_max) * x_distance + (self._gravity.y * x_distance ** 2) / (2 * velocity_x_max ** 2)
+            max_y_reach = (-15 / velocity_x_max) * x_distance + (
+                self._gravity.y * x_distance**2
+            ) / (2 * velocity_x_max**2)
             max_y_reach_point = center[1] + int(max_y_reach)
             reach = random.randint(max_y_reach_point, center[1])
             center_platform_y = reach
             center_platform = (center_platform_x, center_platform_y)
             print(center_platform)
             platform = Platform(surf=surf, center=center_platform)
-            if pygame.sprite.spritecollideany(platform,self._platforms):
+            if pygame.sprite.spritecollideany(platform, self._platforms):
                 continue
             self._platforms.add(platform)
 
@@ -145,7 +155,7 @@ class Platform(pygame.sprite.Sprite):
             the platform occupies.
     """
 
-    def __init__(self, surf=None, color=(0, 255, 0), topleft=None) -> None:
+    def __init__(self, surf=None, color=(0, 255, 0), center=None) -> None:
         """
         Initializes the platforms.
 
