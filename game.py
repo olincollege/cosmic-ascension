@@ -85,8 +85,8 @@ class Game:
             none
         """
         while True:
-            if self.camera():
-                self._model.increase_score()
+            if self.camera() and self._model.player.velocity.y < 0:
+                    self._model.increase_score()
             self._model.platform_generation()
             self._view.draw(self._screen)
             self._view.score(self._screen)
