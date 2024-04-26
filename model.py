@@ -13,19 +13,28 @@ class Model:
         self._friction = 0.12
         self._player = Player(self._gravity, self._friction)
         self._platforms = platforms
+
     def update(self, x_acceleration, jumping):
         self._player.move(x_acceleration)
         hits = pygame.sprite.spritecollide(self._player, self._platforms, False)
-        if hits and not jumping:
-            if self._player.rect.bottom < hits[0].rect.bottom:
-                self._player.set_velocity(vector(self._player.velocity.x, 0))
-                self._player.set_position(vector(self._player.position.x, hits[0].rect.top - 29))
-        if jumping and hits:
+        if hits and jumping:
             self._player.set_velocity(vector(self._player.velocity.x, -15))
+        else:
+            jumping = False
+        
+        print(hits)
+        if self._player.velocity.y > 0:
+            if hits:
+                print(self._player.rect.bottom)
+                print(hits[0].rect.bottom)
+                if self._player.position.y/3 < hits[0].rect.bottom:
+                    self._player.set_velocity(vector(self._player.velocity.x, 0))
+                    self._player.set_position(vector(self._player.position.x, hits[0].rect.top-29))
+                    jumping = False
         self._player.update()
 
     def platform_generation(self):
-        while len(self._platforms) < 2:
+        while len(self._platforms) < 6:
             latest_platform = len(self._platforms)
             previous_platform = self._platforms.sprites()[latest_platform-1]
             left = previous_platform.rect.left
@@ -60,7 +69,7 @@ class Platform(pygame.sprite.Sprite):
     def __init__(self, surf=None, color = (0,255,0), topleft=None) -> None:
         super().__init__()
         if surf is None:
-            self._surf = pygame.Surface((random.randint(50,100), 7))
+            self._surf = pygame.Surface((random.randint(50,100), 12))
         else:
             self._surf = surf
         self._surf.fill(color)
@@ -115,7 +124,7 @@ class Player(pygame.sprite.Sprite):
         self._velocity = velocity
 
     def move(self, x_acceleration):
-        print(self._velocity)
+        # print(self._velocity)
         self._acceleration = self._gravity
         self._acceleration.x = x_acceleration
         self._acceleration.x -= self._velocity.x * 0.12

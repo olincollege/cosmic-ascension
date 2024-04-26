@@ -32,9 +32,19 @@ class Game():
         self._model = Model(platforms)
         self._controller = Controller()
         self._view = View(self._model)
+
+    def camera(self):
+        if self._model.player.rect.top <= HEIGHT / 3:
+            self._model.player.position.y += abs(self._model.player.velocity.y)
+            for plat in self._model.platforms:
+                plat.rect.y += abs(self._model.player.velocity.y)
+                if plat.rect.top >= HEIGHT:
+                    plat.kill()
+
     def start(self):
         while True:
-            self._screen.blit(self._model.player.surf, self._model.player.rect)
+            self._model.platform_generation()
+            self.camera()
             self._view.draw(self._screen)
             self._controller.update()
             self._model.update(self._controller._left_right, self._controller._jumping)
