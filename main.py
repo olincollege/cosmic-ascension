@@ -22,9 +22,9 @@ model = Model(platforms)
 view = View(model)
 controller = Controller(model)
 
-for x in range(random.randint(5, 6)):
-    platform = Platform()
-    platforms.add(platform)
+# for x in range(random.randint(5, 6)):
+#     platform = Platform()
+#     platforms.add(platform)
 
 while True:
     for event in pygame.event.get():
@@ -34,6 +34,7 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 controller.jump()
+    model.platform_generation()
     controller.move()
     if model._player.rect.top <= HEIGHT / 3:
         model._player.position.y += abs(controller._velocity.y)
