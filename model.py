@@ -37,11 +37,13 @@ class Model:
             platforms: The intial Platform instances to start the game with.
             controller: An instance of the Controller class
         """
-        self._gravity = vector(0, 0.5)
+        self._gravity = vector(0, 0.35)
         self._friction = 0.12
         self._player = Player(self._gravity, self._friction)
+        self._platform_num = 10
         self._platforms = platforms
         self._controller = controller
+        self._game_difficulty = 1
         self._score = 0
 
     def update(self, x_acceleration, jumping):
@@ -55,21 +57,27 @@ class Model:
         """
         self._player.move(x_acceleration)
         hits = pygame.sprite.spritecollide(self._player, self._platforms, False)
-        if hits and jumping:
-            self._player.set_velocity(vector(self._player.velocity.x, -15))
-        else:
-            jumping = False
+        # if hits and jumping and self._player.velocity.y >= 0 and (self._player.position.y + self._player.rect.height / 10) < hits[0].rect.bottom:
+        #     self._player.set_velocity(vector(self._player.velocity.x, self._player.jump_velocity))
         # print(hits)
         if self._player.velocity.y > 0:
             if hits:
                 # print(self._player.rect.bottom)
                 # print(hits[0].rect.bottom)
-                if self._player.position.y < hits[0].rect.bottom:
+                if (self._player.position.y + self._player.rect.height / 10) < hits[
+                    0
+                ].rect.bottom:
                     self._player.set_velocity(vector(self._player.velocity.x, 0))
                     self._player.set_position(
-                        vector(self._player.position.x, hits[0].rect.top - 29)
+                        vector(
+                            self._player.position.x,
+                            hits[0].rect.top - self._player.rect.height / 2,
+                        )
                     )
-                    jumping = False
+                    if jumping:
+                        self._player.set_velocity(
+                            vector(self._player.velocity.x, self._player.jump_velocity)
+                        )
         self._player.update()
 
     def platform_generation(self):
@@ -79,7 +87,7 @@ class Model:
         Args:
             none
         """
-        while len(self._platforms) < 10:
+        while len(self._platforms) < self._platform_num:
             latest_platform = len(self._platforms) - 1
             previous_platform = self._platforms.sprites()[latest_platform]
             left = previous_platform.rect.left
@@ -89,16 +97,25 @@ class Model:
             # print(right)
             velocity_x_max = math.sqrt(2 * 0.5 * (right - left))
             # print(velocity_x_max)
-            max_y_height = (15**2) / (2 * self._gravity.y)
+            max_y_height = self._game_difficulty * (
+                ((-self._player.jump_velocity) ** 2) / (2 * self._gravity.y)
+            )
             # print(max_y_height)
             fall_time = math.sqrt(2 * max_y_height / self._gravity.y)
             # print(fall_time)
             max_x_distance = int(velocity_x_max * fall_time)
             # print(max_x_distance)
-            surf = pygame.Surface((random.randint(50, 100), 12))
+            surf = pygame.Surface((random.randint(50, 100), 15))
             width = surf.get_width()
             max_left_center = -max_x_distance + left + width / 2
             max_right_center = max_x_distance + right - width / 2
+
+            range_max_height_obtainable_left = (
+                center[0] + (max_left_center - center[0]) / 2
+            )
+            range_max_height_obtainable_right = (
+                center[0] + (max_right_center - center[0]) / 2
+            )
             if max_left_center < 0:
                 max_left_center = width / 2 + 10
             if max_right_center > 400:
@@ -106,21 +123,58 @@ class Model:
             center_platform_x = random.randint(
                 int(max_left_center), int(max_right_center)
             )
-            x_distance = abs(center_platform_x - center[0])
-            max_y_reach = (-15 / velocity_x_max) * x_distance + (
-                self._gravity.y * x_distance**2
-            ) / (2 * velocity_x_max**2)
-            max_y_reach_point = center[1] + int(max_y_reach)
-            reach = random.randint(max_y_reach_point, center[1])
+            if (
+                center_platform_x > range_max_height_obtainable_left
+                and center_platform_x < range_max_height_obtainable_right
+            ):
+                max_y_reach = max_y_height
+                max_y_reach_point = center[1] - int(max_y_reach)
+            else:
+                x_distance = center_platform_x - center[0]
+                if x_distance < 0:
+                    new_platform_edge = center_platform_x + width / 2
+                    old_platform_edge = center[0] - (right - left) / 2
+                else:
+                    new_platform_edge = center_platform_x - width / 2
+                    old_platform_edge = center[0] - (right + left) / 2
+                x_distance = abs(new_platform_edge - old_platform_edge)
+                print(f"x_distance {x_distance}")
+                max_y_reach = (
+                    self._player.velocity.y / velocity_x_max
+                ) * x_distance + (self._gravity.y * x_distance**2) / (
+                    2 * velocity_x_max**2
+                )
+                print(f"max_y_reach {max_y_reach}")
+                # max_y_reach = (self._player.jump_velocity / velocity_x_max) * x_distance + (
+                #     self._gravity.y * x_distance**2
+                # ) / (2 * velocity_x_max**2)
+                max_y_reach_point = center[1] - abs(int(max_y_reach))
+            print(f"max_x_velocity{velocity_x_max}")
+            print(max_y_height)
+            print(f"max_y_reach{max_y_reach}")
+            print(f"max_y_reach_point {max_y_reach_point}")
+            print(f"center_y_plat {center[1]}")
+            reach = reach = random.randint(
+                int(max_y_reach_point),
+                int(
+                    center[1]
+                    - (center[1] - max_y_reach_point) / (1.5 * self._game_difficulty)
+                ),
+            )
+            # reach = int(max_y_reach_point)
+
             center_platform_y = reach
             center_platform = (center_platform_x, center_platform_y)
+            print(center_platform)
             # print(center_platform)
             platform = Platform(surf=surf, center=center_platform)
             if pygame.sprite.spritecollideany(platform, self._platforms):
                 continue
             self._platforms.add(platform)
+
     def increase_score(self):
         self._score += 1
+
     @property
     def player(self):
         """
@@ -142,6 +196,7 @@ class Model:
             The platforms attribute of the model.
         """
         return self._platforms
+
     @property
     def score(self):
         """
@@ -185,6 +240,7 @@ class Platform(pygame.sprite.Sprite):
         else:
             center = center
         self._rect = self._surf.get_rect(center=center)
+
     def set_rect(self, x, y):
         """
         Sets the rect of the platform.
@@ -195,6 +251,7 @@ class Platform(pygame.sprite.Sprite):
         """
         self._rect.x = x
         self._rect.y = y
+
     @property
     def rect(self):
         """
@@ -252,12 +309,13 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self._gravity = gravity
         self._friction = friction
+        self._jump_velocity = -10
         self._acceleration = vector(0, 0)
         self._velocity = vector(0, 0)
         self._position = vector(200, 310)
         self._surf = pygame.Surface((30, 30))
         self._surf.fill((255, 255, 0))
-        self._rect = self._surf.get_rect(topleft=self._position)
+        self._rect = self._surf.get_rect(center=self._position)
 
     def update(self):
         """
@@ -268,7 +326,7 @@ class Player(pygame.sprite.Sprite):
         """
         self._surf = pygame.Surface((30, 30))
         self._surf.fill((255, 255, 0))
-        self._rect = self._surf.get_rect(topleft=self._position)
+        self._rect = self._surf.get_rect(center=self._position)
 
     def set_position(self, position):
         """
@@ -308,6 +366,16 @@ class Player(pygame.sprite.Sprite):
 
         if self._acceleration.x < 0.1 or self._acceleration.x > -0.1:
             self._acceleration.x = 0
+
+    @property
+    def jump_velocity(self):
+        """
+        Returns whether or not player is jumping
+
+        Returns:
+            boolean representing whether or not the player is jumping
+        """
+        return self._jump_velocity
 
     @property
     def acceleration(self):
