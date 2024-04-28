@@ -5,10 +5,8 @@ user inputs. It acts as the Model section of MVC architecture.
 
 import pygame
 from pygame.locals import *
-import sys
 import random
 import math
-from controller import Controller
 
 
 vector = pygame.math.Vector2
@@ -20,30 +18,65 @@ class Model:
     Updates the data related to the game play.
 
     Attributes:
-        _gravity: A vector representing the acceleration associated
-            with gravity that acts on the character.
-        _friction: An int representing the value friction associated
-            with the characters interactions with objects in game.
-        _player: An instance of the Player class, with the gravity
-            and friction attributes applied to it.
-        _platforms: Platform instances that are present in the model.
-        _controller: An instance of the controller class.
+        _gravity: pygame.math.Vector2 that represents
+            the gravity in the game
+        _friction: An float representing the friction
+             associated
+            with the characters interactions with
+                objects in game.
+        _player: An instance of the Player class
+            representing the player character
+        _platform_num: An int representing the max
+            number of platforms generated at any given time
+        _platforms: pygame.sprite.Group() of platforms
+            in the game
+        _game_difficulty: An int representing the difficulty
+            of the game. 1 is the max difficulty, 0.5 is the
+            game's easy mode, and 0.75 is the game's medium
+        _score: int representing the score of the game
+        _screen_width: int representing the width of the
+            display screen
+        _screen_height: int representing the height of the
+            display screen
     """
 
-    def __init__(self, platforms, controller, width, height) -> None:
+    def __init__(self, platforms, width, height) -> None:
         """
         Initializes the model.
 
         Args:
-            platforms: The intial Platform instances to start the game with.
-            controller: An instance of the Controller class
+            platforms: pygame.sprite.Group() representing the
+                current platforms in the game
+            width: int representing the width of the display
+                screen
+            height: int representing the height of the display
+                screen    Attributes:
+        _gravity: pygame.math.Vector2 that represents
+            the gravity in the game
+        _friction: An float representing the friction
+             associated
+            with the characters interactions with
+                objects in game.
+        _player: An instance of the Player class
+            representing the player character
+        _platform_num: An int representing the max
+            number of platforms generated at any given time
+        _platforms: pygame.sprite.Group() of platforms
+            in the game
+        _game_difficulty: An int representing the difficulty
+            of the game. 1 is the max difficulty, 0.5 is the
+            game's easy mode, and 0.75 is the game's medium
+        _score: int representing the score of the game
+        _screen_width: int representing the width of the
+            display screen
+        _screen_height: int representing the height of the
+            display screen
         """
         self._gravity = vector(0, 0.35)
         self._friction = 0.12
         self._player = Player(self._gravity, self._friction)
         self._platform_num = 30
         self._platforms = platforms
-        self._controller = controller
         self._game_difficulty = 1
         self._score = 0
         self._screen_width = width
@@ -55,33 +88,36 @@ class Model:
         and jumps acting on it.
 
         Args:
-            x_acceleration: An int representing how fast the character accelerates
+            x_acceleration: A float representing how fast the character accelerates
             in a horizontal direction.
             jumping: A bool representing if the character is jumping or not.
         """
+        # Set the player x acceleration and move character based on it
         self._player.move(x_acceleration)
+
+        # Check if the player is touching any platform
         hits = pygame.sprite.spritecollide(self._player, self._platforms, False)
-        # if hits and jumping and self._player.velocity.y >= 0 and (self._player.position.y + self._player.rect.height / 10) < hits[0].rect.bottom:
-        #     self._player.set_velocity(vector(self._player.velocity.x, self._player.jump_velocity))
-        # print(hits)
-        if self._player.velocity.y > 0:
-            if hits:
-                # print(self._player.rect.bottom)
-                # print(hits[0].rect.bottom)
-                if (self._player.position.y + self._player.rect.height / 10) < hits[
-                    0
-                ].rect.bottom:
-                    self._player.set_velocity(vector(self._player.velocity.x, 0))
-                    self._player.set_position(
-                        vector(
-                            self._player.position.x,
-                            hits[0].rect.top - self._player.rect.height / 2,
-                        )
+
+        # If player is not moving upwards and touching a platform
+        if self._player.velocity.y >= 0 and hits:
+            # If botto of player is above the bottom of the platform
+            if (self._player.rect.bottom) < hits[0].rect.bottom:
+                # Then set the velocity y velocity of the player to 0 
+                # and put its position to on top of the platform
+                self._player.set_velocity(vector(self._player.velocity.x, 0))
+                self._player.set_position(
+                    vector(
+                        self._player.position.x,
+                        hits[0].rect.top - self._player.rect.height / 2,
                     )
-                    if jumping:
-                        self._player.set_velocity(
-                            vector(self._player.velocity.x, self._player.jump_velocity)
-                        )
+                )
+                # If the player is holding down the space bar, override the previous
+                # y velocity setting and change it to jump velocity 
+                if jumping:
+                    self._player.set_velocity(
+                        vector(self._player.velocity.x, self._player.jump_velocity)
+                    )
+        # Update the player's rect
         self._player.update()
 
     def platform_generation(self):
@@ -90,7 +126,7 @@ class Model:
 
         Args:
             none
-        
+
         Note:
             The calculation for the platform distances are based off
             physics kinematics equations.
@@ -121,12 +157,13 @@ class Model:
             # Generate new platform dimensions
             surf = pygame.Surface((random.randint(50, 100), 15))
             new_platform_width = surf.get_width()
+            new_platform_height = surf.get_height()
 
             # Accounting for take off and landing of player. Gives more leeway at higher difficult to
             # account for reaction time. Can't expect player to make perfect jump to maximize height
             # and distance every time
             player_width = self._player.rect.width
-            max_x_distance -= player_width * 4 * self._game_difficulty
+            max_x_distance -= player_width * 3.5 * self._game_difficulty
 
             # Accounting for difficulty level
             max_x_distance = max_x_distance * self._game_difficulty
@@ -202,7 +239,9 @@ class Model:
             # Adjust difficulty level
             minimum_y = center[1] - max_y_reach + 1
 
-            new_platform_center_y = random.randint(max_y_reach_point, minimum_y)
+            new_platform_center_y = (
+                random.randint(max_y_reach_point, minimum_y) + new_platform_height / 2
+            )
 
             center_platform = (new_platform_center_x, new_platform_center_y)
             platform = Platform(surf=surf, center=center_platform)
