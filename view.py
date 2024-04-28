@@ -5,12 +5,11 @@ It acts as the View section of MVC architecture.
 
 import pygame
 from pygame.locals import *
-import sys
-import random
 
 
 vector = pygame.math.Vector2
 pygame.font.init()
+
 
 class View:
     """
@@ -41,8 +40,15 @@ class View:
         displaysurface.blit(self._model.player.surf, self._model.player.rect)
         for platform in self._model.platforms:
             displaysurface.blit(platform.surf, platform.rect)
-    def score(self, displaysurface):
-            font = pygame.font.Font(None, 36)
-            score_text = font.render(f'Score: {self._model.score}', True, (255, 255, 255))
-            displaysurface.blit(score_text, (10, 10))
 
+    def score(self, displaysurface):
+        """
+        Draws the score onto the display
+        
+        Args:
+            displaysurface: A surface object representing the window
+                to view.
+        """
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {self._model.score}", True, (255, 255, 255))
+        displaysurface.blit(score_text, (10, 10))

@@ -7,7 +7,6 @@ It acts as the Controller section of MVC architecture.
 import pygame
 from pygame.locals import *
 import sys
-import random
 
 vector = pygame.math.Vector2
 

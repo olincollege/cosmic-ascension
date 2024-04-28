@@ -14,18 +14,6 @@ from controller import Controller
 
 WIDTH = 400
 HEIGHT = 450
-# display = pygame.display.set_mode((WIDTH, HEIGHT))
-
-# surf = pygame.Surface((30, 30))
-# surf.fill((255,255,0))
-# rect = surf.get_rect()
-# class Game():
-#     def start(self):
-#         controller = Controller()
-#         while True:
-#             controller.update()
-#             display.blit(surf, rect)
-#             pygame.display.update()
 
 
 class Game:
@@ -58,7 +46,7 @@ class Game:
         platforms = pygame.sprite.Group()
         platforms.add(ground)
         self._controller = Controller()
-        self._model = Model(platforms, self._controller, WIDTH, HEIGHT)
+        self._model = Model(platforms, WIDTH, HEIGHT)
         self._view = View(self._model)
 
     def camera(self):
