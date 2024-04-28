@@ -88,25 +88,35 @@ class Model:
 
         Args:
             none
+        
+        Note:
+            The calculation for the platform distances are based off
+            physics kinematics equations.
         """
         while len(self._platforms) < self._platform_num:
+            # Get previous platform dimensions
             latest_platform = len(self._platforms) - 1
             previous_platform = self._platforms.sprites()[latest_platform]
             left = previous_platform.rect.left
             right = previous_platform.rect.right
             center = previous_platform.rect.center
-            # print(left)
-            # print(right)
+
+            # Calculate the maximum x velocity the player can reach based
+            # on how long the previous platform is
             velocity_x_max = math.sqrt(2 * 0.5 * (right - left))
-            # print(velocity_x_max)
+
+            # Calculate maximum height player can reach
             max_y_height = self._game_difficulty * (
                 ((-self._player.jump_velocity) ** 2) / (2 * self._gravity.y)
             )
-            # print(max_y_height)
+
+            # Calculate how long it takes to fall from this height
             fall_time = math.sqrt(2 * max_y_height / self._gravity.y)
-            # print(fall_time)
+
+            # Calculate how far player can move in that time
             max_x_distance = int(velocity_x_max * fall_time)
-            # print(max_x_distance)
+
+            # Generate new platform dimensions
             surf = pygame.Surface((random.randint(50, 100), 15))
             new_platform_width = surf.get_width()
 
