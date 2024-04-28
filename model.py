@@ -29,7 +29,7 @@ class Model:
         _platforms: Platform instances that are present in the model.
     """
 
-    def __init__(self, platforms, controller) -> None:
+    def __init__(self, platforms, controller, width, height) -> None:
         """
         Initializes the model.
 
@@ -40,11 +40,13 @@ class Model:
         self._gravity = vector(0, 0.35)
         self._friction = 0.12
         self._player = Player(self._gravity, self._friction)
-        self._platform_num = 10
+        self._platform_num = 30
         self._platforms = platforms
         self._controller = controller
         self._game_difficulty = 1
         self._score = 0
+        self._screen_width = width
+        self._screen_height = height
 
     def update(self, x_acceleration, jumping):
         """
@@ -106,73 +108,106 @@ class Model:
             max_x_distance = int(velocity_x_max * fall_time)
             # print(max_x_distance)
             surf = pygame.Surface((random.randint(50, 100), 15))
-            width = surf.get_width()
-            max_left_center = -max_x_distance + left + width / 2
-            max_right_center = max_x_distance + right - width / 2
+            new_platform_width = surf.get_width()
 
-            range_max_height_obtainable_left = (
-                center[0] + (max_left_center - center[0]) / 2
+            # Accounting for take off and landing of player. Gives more leeway at higher difficult to
+            # account for reaction time. Can't expect player to make perfect jump to maximize height
+            # and distance every time
+            player_width = self._player.rect.width
+            max_x_distance -= player_width * 4 * self._game_difficulty
+
+            # Accounting for difficulty level
+            max_x_distance = max_x_distance * self._game_difficulty
+
+            # Calculate maximum reachable range
+            max_left = left - max_x_distance
+            max_right = right + max_x_distance
+
+            # Calculating range where player can reach max height
+            total_range = max_right - max_left
+            left_reach_max = max_left + total_range / 4
+            right_reach_max = max_right - total_range / 4
+
+            # Calculating range of x that player can reach and are still on screen
+            if max_left < 0:
+                max_left = 0
+            if max_right > self._screen_width:
+                max_right = self._screen_width
+
+            # Account for difficulty
+            max_left = int(max_left)
+            max_right = int(max_right)
+            full_range = max_right - max_left
+            minimum_left_x = (
+                int(max_left + (full_range / 2) * (1 - self._game_difficulty)) + 1
             )
-            range_max_height_obtainable_right = (
-                center[0] + (max_right_center - center[0]) / 2
+            minimum_right_x = (
+                int(max_right - (full_range / 2) * (1 - self._game_difficulty)) - 1
             )
-            if max_left_center < 0:
-                max_left_center = width / 2 + 10
-            if max_right_center > 400:
-                max_right_center = 400 - width / 2 - 10
-            center_platform_x = random.randint(
-                int(max_left_center), int(max_right_center)
+
+            # Calculate landing x value
+            x_landing = random.choice(
+                [
+                    i
+                    for i in range(max_left, max_right)
+                    if i not in range(minimum_left_x, minimum_right_x)
+                ]
             )
-            if (
-                center_platform_x > range_max_height_obtainable_left
-                and center_platform_x < range_max_height_obtainable_right
-            ):
-                max_y_reach = max_y_height
-                max_y_reach_point = center[1] - int(max_y_reach)
+            # Check if player needs to jump left or right of current platform
+            if x_landing < center[0]:
+                is_left = True
             else:
-                x_distance = center_platform_x - center[0]
-                if x_distance < 0:
-                    new_platform_edge = center_platform_x + width / 2
-                    old_platform_edge = center[0] - (right - left) / 2
-                else:
-                    new_platform_edge = center_platform_x - width / 2
-                    old_platform_edge = center[0] - (right + left) / 2
-                x_distance = abs(new_platform_edge - old_platform_edge)
-                print(f"x_distance {x_distance}")
-                max_y_reach = (
-                    self._player.velocity.y / velocity_x_max
-                ) * x_distance + (self._gravity.y * x_distance**2) / (
-                    2 * velocity_x_max**2
-                )
-                print(f"max_y_reach {max_y_reach}")
-                # max_y_reach = (self._player.jump_velocity / velocity_x_max) * x_distance + (
-                #     self._gravity.y * x_distance**2
-                # ) / (2 * velocity_x_max**2)
-                max_y_reach_point = center[1] - abs(int(max_y_reach))
-            print(f"max_x_velocity{velocity_x_max}")
-            print(max_y_height)
-            print(f"max_y_reach{max_y_reach}")
-            print(f"max_y_reach_point {max_y_reach_point}")
-            print(f"center_y_plat {center[1]}")
-            reach = reach = random.randint(
-                int(max_y_reach_point),
-                int(
-                    center[1]
-                    - (center[1] - max_y_reach_point) / (1.5 * self._game_difficulty)
-                ),
-            )
-            # reach = int(max_y_reach_point)
+                is_left = False
 
-            center_platform_y = reach
-            center_platform = (center_platform_x, center_platform_y)
-            print(center_platform)
-            # print(center_platform)
+            # Calculate center of new platform
+            if x_landing < new_platform_width / 2:
+                new_platform_center_x = new_platform_width / 2
+            elif x_landing > (self._screen_width - new_platform_width / 2):
+                new_platform_center_x = self._screen_width - new_platform_width / 2
+            else:
+                if is_left:
+                    new_platform_center_x = (
+                        x_landing - new_platform_width / 2 + player_width / 2
+                    )
+                else:
+                    new_platform_center_x = (
+                        x_landing + new_platform_width / 2 - player_width / 2
+                    )
+
+            # Check if landing is in range of where max height is reachable. If not, calculate max reachable y
+            if x_landing > left_reach_max or x_landing < right_reach_max:
+                max_y_reach = max_y_height
+            else:
+                if x_landing < left_reach_max:
+                    x_distance = left_reach_max - x_landing
+                else:
+                    x_distance = x_landing - right_reach_max
+                time = x_distance / velocity_x_max
+                max_y_reach = max_y_height - 0.5 * self._gravity.y * time**2
+            max_y_reach = int(max_y_reach)
+            max_y_reach_point = center[1] - max_y_reach
+
+            # Adjust difficulty level
+            minimum_y = center[1] - max_y_reach + 1
+
+            new_platform_center_y = random.randint(max_y_reach_point, minimum_y)
+
+            center_platform = (new_platform_center_x, new_platform_center_y)
             platform = Platform(surf=surf, center=center_platform)
             if pygame.sprite.spritecollideany(platform, self._platforms):
                 continue
             self._platforms.add(platform)
 
     def increase_score(self):
+        """
+        Increases the private attribute _score by 1
+
+        Args:
+            None
+
+        Return:
+            None
+        """
         self._score += 1
 
     @property

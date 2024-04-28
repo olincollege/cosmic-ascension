@@ -58,7 +58,7 @@ class Game:
         platforms = pygame.sprite.Group()
         platforms.add(ground)
         self._controller = Controller()
-        self._model = Model(platforms, self._controller)
+        self._model = Model(platforms, self._controller, WIDTH, HEIGHT)
         self._view = View(self._model)
 
     def camera(self):
