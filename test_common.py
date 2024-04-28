@@ -51,25 +51,29 @@ def check_private_var(class_name, _):
     return len(private_variables) >= 1
 
 
-def check_board_attribute(class_name, _):
+def check_class_attribute(class_name, class_attribute):
     """
-    Check whether a class has an attribute called "board".
+    Check whether a class has a specified attribute.
 
     Args:
-        class_name: A class to check for the board attribute.
+        class_name: A class to check for the attribute.
+        class_attribute: A string representing the name of the attribute
+            to check for.
     """
-    return hasattr(class_name, "board")
+    return hasattr(class_name, class_attribute)
 
 
-def check_board_property(class_name, _):
+def check_class_property(class_name, class_property):
     """
-    Check whether TicTacToeView has a property called board (created with the
+    Check whether a class has a specific property (created with the
     property decorator).
 
     Args:
-        class_name: A class to check for the board property.
+        class_name: A class to check for the property.
+        class_property: A string representing the property to check for.
+
     """
-    return isinstance(class_name.board, property)
+    return isinstance(class_name.class_property, property)
 
 
 def check_core_method(class_name, method_name):
