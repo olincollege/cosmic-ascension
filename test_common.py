@@ -1,3 +1,10 @@
+"""
+This module create functions for commonly run test files.
+"""
+
+from game import Game
+
+
 def _is_private_variable(class_name, var_name):
     """
     Check if a variable name is private in a class.
