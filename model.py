@@ -27,6 +27,7 @@ class Model:
         _player: An instance of the Player class, with the gravity
             and friction attributes applied to it.
         _platforms: Platform instances that are present in the model.
+        _controller: An instance of the controller class.
     """
 
     def __init__(self, platforms, controller, width, height) -> None:
@@ -56,6 +57,7 @@ class Model:
         Args:
             x_acceleration: An int representing how fast the character accelerates
             in a horizontal direction.
+            jumping: A bool representing if the character is jumping or not.
         """
         self._player.move(x_acceleration)
         hits = pygame.sprite.spritecollide(self._player, self._platforms, False)

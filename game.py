@@ -69,14 +69,21 @@ class Game:
             none
         """
         if self._model.player.rect.top <= HEIGHT / 3:
-            new_position_y = self._model.player.position.y + abs(self._model.player.velocity.y)
-            self._model.player.set_position((self._model.player.position.x, new_position_y))
+            new_position_y = self._model.player.position.y + abs(
+                self._model.player.velocity.y
+            )
+            self._model.player.set_position(
+                (self._model.player.position.x, new_position_y)
+            )
             for plat in self._model.platforms:
-                plat.set_rect(plat.rect.x, plat.rect.y + abs(self._model.player.velocity.y))
+                plat.set_rect(
+                    plat.rect.x, plat.rect.y + abs(self._model.player.velocity.y)
+                )
                 if plat.rect.top >= HEIGHT:
                     plat.kill()
             return True
         return False
+
     def start(self):
         """
         Dictates the start of game play.
@@ -86,7 +93,7 @@ class Game:
         """
         while True:
             if self.camera() and self._model.player.velocity.y < 0:
-                    self._model.increase_score()
+                self._model.increase_score()
             self._model.platform_generation()
             self._view.draw(self._screen)
             self._view.score(self._screen)
