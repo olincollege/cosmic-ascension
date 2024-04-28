@@ -37,14 +37,14 @@ class View:
                 to view.
         """
         displaysurface.fill((0, 0, 0))
-        displaysurface.blit(self._model.player.surf, self._model.player.rect)
+        displaysurface.blit(self._model.player._image, self._model.player.rect)
         for platform in self._model.platforms:
             displaysurface.blit(platform.surf, platform.rect)
 
     def score(self, displaysurface):
         """
         Draws the score onto the display
-        
+
         Args:
             displaysurface: A surface object representing the window
                 to view.

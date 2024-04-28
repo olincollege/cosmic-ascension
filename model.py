@@ -77,7 +77,7 @@ class Model:
         self._player = Player(self._gravity, self._friction)
         self._platform_num = 30
         self._platforms = platforms
-        self._game_difficulty = 1
+        self._game_difficulty = 0.5
         self._score = 0
         self._screen_width = width
         self._screen_height = height
@@ -100,10 +100,10 @@ class Model:
 
         # If player is not moving upwards and touching a platform
         if self._player.velocity.y >= 0 and hits:
-            # If botto of player is above the bottom of the platform
+            # If bottom of player is above the bottom of the platform
             if (self._player.rect.bottom) < hits[0].rect.bottom:
-                # Then set the velocity y velocity of the player to 0 
-                # and put its position to on top of the platform
+                # Then set the velocity y velocity of the player to 0
+                # and put its y position to on top of the platform
                 self._player.set_velocity(vector(self._player.velocity.x, 0))
                 self._player.set_position(
                     vector(
@@ -112,7 +112,7 @@ class Model:
                     )
                 )
                 # If the player is holding down the space bar, override the previous
-                # y velocity setting and change it to jump velocity 
+                # y velocity setting and change it to jump velocity
                 if jumping:
                     self._player.set_velocity(
                         vector(self._player.velocity.x, self._player.jump_velocity)
@@ -306,7 +306,7 @@ class Platform(pygame.sprite.Sprite):
             the platform occupies.
     """
 
-    def __init__(self, surf=None, color=(0, 255, 0), center=None) -> None:
+    def __init__(self, surf=None, color=(128, 128, 128), center=None) -> None:
         """
         Initializes the platforms.
 
@@ -399,9 +399,12 @@ class Player(pygame.sprite.Sprite):
         self._acceleration = vector(0, 0)
         self._velocity = vector(0, 0)
         self._position = vector(200, 310)
-        self._surf = pygame.Surface((30, 30))
-        self._surf.fill((255, 255, 0))
-        self._rect = self._surf.get_rect(center=self._position)
+        self._image = pygame.image.load("sprites/TestRocket.png")
+        self._character_width = 35
+        self._image = pygame.transform.scale(
+            self._image, (self._character_width, self._character_width * (self._image.get_height() / self._image.get_width()))
+        )
+        self._rect = self._image.get_rect(center=self._position)
 
     def update(self):
         """
@@ -410,9 +413,7 @@ class Player(pygame.sprite.Sprite):
         Args:
             none
         """
-        self._surf = pygame.Surface((30, 30))
-        self._surf.fill((255, 255, 0))
-        self._rect = self._surf.get_rect(center=self._position)
+        self._rect = self._image.get_rect(center=self._position)
 
     def set_position(self, position):
         """

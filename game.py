@@ -41,7 +41,7 @@ class Game:
         self._fps = 60
         self._screen = pygame.display.set_mode((WIDTH, HEIGHT))
         ground = Platform(
-            surf=pygame.Surface((200, 20)), color=(255, 0, 0), center=(200, 445)
+            surf=pygame.Surface((200, 20)), center=(200, 445)
         )
         platforms = pygame.sprite.Group()
         platforms.add(ground)
