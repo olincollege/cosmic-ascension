@@ -3,6 +3,7 @@ This module contains the Controller class, intended to
 take user inputs and apply certain actions accordingly.
 It acts as the Controller section of MVC architecture.
 """
+
 import sys
 import pygame
 
@@ -72,11 +73,13 @@ class Controller:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
     def update_game_over(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
     @property
     def jumping(self):
         """
