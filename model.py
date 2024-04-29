@@ -322,6 +322,16 @@ class Model:
         """
         return self._game_over
 
+    @property
+    def game_difficulty(self):
+        """
+        Allows private attribute _game_difficulty to be ouput
+
+        Return:
+            A float representing the game difficulty
+        """
+        return self._game_difficulty
+
 
 class Platform(pygame.sprite.Sprite):
     """
@@ -544,3 +554,11 @@ class Player(pygame.sprite.Sprite):
             The rectangle attribute of the model.
         """
         return self._rect
+
+
+in_velocity = vector(0, 0)
+instance = Player(10, 0.12)
+instance.set_velocity(in_velocity)
+exp_velocity = instance.velocity
+
+print(exp_velocity)

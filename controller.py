@@ -3,6 +3,7 @@ This module contains the Controller class, intended to
 take user inputs and apply certain actions accordingly.
 It acts as the Controller section of MVC architecture.
 """
+
 import sys
 import pygame
 
