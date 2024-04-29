@@ -72,7 +72,11 @@ class Controller:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
+    def update_game_over(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
     @property
     def jumping(self):
         """

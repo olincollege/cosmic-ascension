@@ -83,7 +83,7 @@ class Game:
             self._view.draw_menu(self._screen)
             pygame.display.update()
         self._model.set_difficulty(difficulty)
-        while True:
+        while not self._model.game_over:
             if self.camera() and self._model.player.velocity.y < 0:
                 self._model.increase_score()
             self._model.platform_generation()
@@ -91,5 +91,10 @@ class Game:
             self._view.draw_score(self._screen)
             self._controller.update_game()
             self._model.update(self._controller.left_right, self._controller.jumping)
+            self._model.check_player_off_screen()
             pygame.display.update()
             self._clock.tick(self._fps)
+        while True:
+            self._view.draw_game_over(self._screen)
+            self._controller.update_game_over()
+            pygame.display.update()

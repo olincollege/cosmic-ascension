@@ -60,6 +60,14 @@ class View:
         """
         score_text = font.render(f"Score: {self._model.score}", True, (255, 255, 255))
         displaysurface.blit(score_text, (10, 10))
+
+    def draw_game_over(self, displaysurface):
+        displaysurface.fill((0, 0, 0))
+        game_over = font.render("GAME OVER", True, (255, 255, 255))
+        score_text = font.render(f"SCORE: {self._model.score}", True, (255, 255, 255))
+        displaysurface.blit(game_over, game_over.get_rect(center=(200, 150)))
+        displaysurface.blit(score_text, score_text.get_rect(center=(200, 200)))
+
     @property
     def easy_button(self):
         """

@@ -81,6 +81,7 @@ class Model:
         self._score = 0
         self._screen_width = width
         self._screen_height = height
+        self._game_over = False
 
     def update(self, x_acceleration, jumping):
         """
@@ -119,6 +120,16 @@ class Model:
                     )
         # Update the player's rect
         self._player.update()
+    def check_player_off_screen(self):
+        if self._player.position.x < 0 or self._player.position.x > self._screen_width:
+            print("x")
+            print(self._player.position.x)
+            self._game_over = True
+        if self._player.position.y > self._screen_height:
+            print("y")
+            print(self._player.position.y)
+            self._game_over = True
+
 
     def platform_generation(self):
         """
@@ -295,12 +306,22 @@ class Model:
     def score(self):
         """
         Returns the score of the game
+
         Args:
             none
         Returns:
             The score attribute
         """
         return self._score
+    @property
+    def game_over(self):
+        """
+        Allows private attribute _game_over to be ouput
+
+        Return:
+            A boolean representing if game is over
+        """
+        return self._game_over
 
 
 class Platform(pygame.sprite.Sprite):
