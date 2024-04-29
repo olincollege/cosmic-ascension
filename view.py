@@ -9,7 +9,7 @@ from pygame.locals import *
 
 vector = pygame.math.Vector2
 pygame.font.init()
-font = pygame.font.Font(None, 36)
+font = pygame.font.Font("Font/PressStart2P-Regular.ttf", 15)
 
 class View:
     """
@@ -27,9 +27,9 @@ class View:
             model: An instance of the Model class.
         """
         self._model = model
-        self._easy_button = Button((25, 200), "Easy")
-        self._medium_button = Button((150, 200), "Medium")
-        self._hard_button = Button((275, 200), "Hard")
+        self._easy_button = Button((25, 200), "EASY")
+        self._medium_button = Button((150, 200), "MEDIUM")
+        self._hard_button = Button((275, 200), "HARD")
 
     def draw_menu(self, displaysurface):
         displaysurface.fill((0, 0, 0))
@@ -61,7 +61,7 @@ class View:
             displaysurface: A surface object representing the window
                 to view.
         """
-        score_text = font.render(f"Score: {self._model.score}", True, (255, 255, 255))
+        score_text = font.render(f"SCORE: {self._model.score}", True, (255, 255, 255))
         displaysurface.blit(score_text, (10, 10))
 
     def draw_game_over(self, displaysurface):
