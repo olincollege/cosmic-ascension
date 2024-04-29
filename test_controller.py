@@ -124,39 +124,3 @@ def test_controller_updates(keystroke, x_move, y_move):
     # Check the correct value result
     assert x_move_result == x_move
     assert y_move_result == y_move
-
-
-# @pytest.mark.parametrize(
-#     "func",
-#     [
-#         check_private_var,
-#         check_class_attribute,
-#         check_class_property,
-#         check_core_method,
-#     ],
-# )
-
-
-# @pytest.mark.parametrize("private")
-# def test_private_property():
-#     instance = Controller()
-
-#     # Get all variables and methods of the class
-#     var_list = [
-#         obj
-#         for obj in dir(instance)
-#         if not obj.startswith("__") and not callable(getattr(instance, obj))
-#     ]
-
-#     for var in var_list:
-#         # Check that all attributes are private
-#         assert check_private_var(instance, var)
-#         # Check that all attributes have a property
-#         assert check_class_property(Controller, var[1:])
-
-#     # Check th
-
-
-# Checks to run:
-# private: jumping, dead, left_right
-# property: all of the above
