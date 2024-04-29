@@ -7,9 +7,6 @@ It acts as the Controller section of MVC architecture.
 import sys
 import pygame
 
-vector = pygame.math.Vector2
-
-
 class Controller:
     """
     Dictates actions to be completed based on specified user inputs.
@@ -90,17 +87,6 @@ class Controller:
             If the player is jumping or not
         """
         return self._jumping
-
-    @property
-    def dead(self):
-        """
-        Returns the dead bool as a private attribute
-        Args:
-            none
-        Returns:
-            If the player is dead or not
-        """
-        return self._dead
 
     @property
     def left_right(self):

@@ -2,14 +2,12 @@
 This module creates a class to interact with data and the controller of
 user inputs. It acts as the Model section of MVC architecture.
 """
-
-import pygame
-from pygame.locals import *
 import random
 import math
+import pygame
 
 
-vector = pygame.math.Vector2
+VECTOR = pygame.math.Vector2
 
 
 class Model:
@@ -72,7 +70,7 @@ class Model:
         _screen_height: int representing the height of the
             display screen
         """
-        self._gravity = vector(0, 0.35)
+        self._gravity = VECTOR(0, 0.35)
         self._friction = 0.12
         self._player = Player(self._gravity, self._friction)
         self._platform_num = 30
@@ -105,9 +103,9 @@ class Model:
             if (self._player.rect.bottom) < hits[0].rect.bottom:
                 # Then set the velocity y velocity of the player to 0
                 # and put its y position to on top of the platform
-                self._player.set_velocity(vector(self._player.velocity.x, 0))
+                self._player.set_velocity(VECTOR(self._player.velocity.x, 0))
                 self._player.set_position(
-                    vector(
+                    VECTOR(
                         self._player.position.x,
                         hits[0].rect.top - self._player.rect.height / 2,
                     )
@@ -116,7 +114,7 @@ class Model:
                 # y velocity setting and change it to jump velocity
                 if jumping:
                     self._player.set_velocity(
-                        vector(self._player.velocity.x, self._player.jump_velocity)
+                        VECTOR(self._player.velocity.x, self._player.jump_velocity)
                     )
         # Update the player's rect
         self._player.update()
@@ -166,9 +164,10 @@ class Model:
             new_platform_width = surf.get_width()
             new_platform_height = surf.get_height()
 
-            # Accounting for take off and landing of player. Gives more leeway at higher difficult to
-            # account for reaction time. Can't expect player to make perfect jump to maximize height
-            # and distance every time
+            # Accounting for take off and landing of player. Gives
+            # more leeway at higher difficult to account for reaction
+            # time. Can't expect player to make perfect jump to
+            # maximize height and distance every time
             player_width = self._player.rect.width
             max_x_distance -= player_width * 3.5 * self._game_difficulty
 
@@ -230,7 +229,8 @@ class Model:
                         x_landing + new_platform_width / 2 - player_width / 2
                     )
 
-            # Check if landing is in range of where max height is reachable. If not, calculate max reachable y
+            # Check if landing is in range of where max height is reachable.
+            # If not, calculate max reachable y
             if x_landing > left_reach_max or x_landing < right_reach_max:
                 max_y_reach = max_y_height
             else:
@@ -394,7 +394,7 @@ class Platform(pygame.sprite.Sprite):
         return self._surf
 
 
-class Player(pygame.sprite.Sprite):
+class Player():
     """
     A class to generate and dictate actions of the game
     character sprite.
@@ -425,15 +425,14 @@ class Player(pygame.sprite.Sprite):
             friction: An int representing the friction between character
                 and platforms.
         """
-        super().__init__()
         self._gravity = gravity
         self._friction = friction
         self._jump_velocity = -10
-        self._acceleration = vector(0, 0)
-        self._velocity = vector(0, 0)
-        self._position = vector(200, 310)
-        self._image = pygame.image.load("sprites/TestRocket.png")
+        self._acceleration = VECTOR(0, 0)
+        self._velocity = VECTOR(0, 0)
+        self._position = VECTOR(200, 310)
         self._character_width = 35
+        self._image = pygame.image.load("sprites/TestRocket.png")
         self._image = pygame.transform.scale(
             self._image,
             (
@@ -554,9 +553,10 @@ class Player(pygame.sprite.Sprite):
             The rectangle attribute of the model.
         """
         return self._rect
+    
 
 
-in_velocity = vector(0, 0)
+in_velocity = VECTOR(0, 0)
 instance = Player(10, 0.12)
 instance.set_velocity(in_velocity)
 exp_velocity = instance.velocity

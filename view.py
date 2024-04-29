@@ -4,12 +4,10 @@ It acts as the View section of MVC architecture.
 """
 
 import pygame
-from pygame.locals import *
 
 
-vector = pygame.math.Vector2
 pygame.font.init()
-font = pygame.font.Font("Font/PressStart2P-Regular.ttf", 15)
+FONT = pygame.font.Font("Font/PressStart2P-Regular.ttf", 15)
 
 
 class View:
@@ -19,7 +17,7 @@ class View:
     Attributes:
         _model: An private attribute of an instance of the model to be viewed.
     """
-
+    
     def __init__(self, model) -> None:
         """
         Initializes the model to be viewed.
@@ -67,7 +65,7 @@ class View:
             displaysurface.blit(self._model.player._image, self._model.player.rect)
 
     def draw_timer(self, time, displaysurface):
-        timer_text = font.render(time, True, (255, 255, 255))
+        timer_text = FONT.render(time, True, (255, 255, 255))
         displaysurface.blit(timer_text, timer_text.get_rect(center=(200, 50)))
 
     def draw_score(self, displaysurface):
@@ -78,13 +76,13 @@ class View:
             displaysurface: A surface object representing the window
                 to view.
         """
-        score_text = font.render(f"SCORE: {self._model.score}", True, (255, 255, 255))
+        score_text = FONT.render(f"SCORE: {self._model.score}", True, (255, 255, 255))
         displaysurface.blit(score_text, (10, 10))
 
     def draw_game_over(self, displaysurface):
         displaysurface.fill((0, 0, 0))
-        game_over = font.render("GAME OVER", True, (255, 255, 255))
-        score_text = font.render(f"SCORE: {self._model.score}", True, (255, 255, 255))
+        game_over = FONT.render("GAME OVER", True, (255, 255, 255))
+        score_text = FONT.render(f"SCORE: {self._model.score}", True, (255, 255, 255))
         displaysurface.blit(game_over, game_over.get_rect(center=(200, 150)))
         displaysurface.blit(score_text, score_text.get_rect(center=(200, 200)))
 
@@ -138,7 +136,7 @@ class Button:
         self._button_surf = pygame.Surface((self._width, self._height))
         self._button_surf.fill(self._button_color)
         self._button_rect = self._button_surf.get_rect(topleft=self._topleft)
-        self._text_surf = font.render(self._text, True, self._text_color)
+        self._text_surf = FONT.render(self._text, True, self._text_color)
         self._text_rect = self._text_surf.get_rect(center=self._button_rect.center)
 
     def display(self, displaysurface):
