@@ -120,16 +120,12 @@ class Model:
                     )
         # Update the player's rect
         self._player.update()
+
     def check_player_off_screen(self):
         if self._player.position.x < 0 or self._player.position.x > self._screen_width:
-            print("x")
-            print(self._player.position.x)
             self._game_over = True
         if self._player.position.y > self._screen_height:
-            print("y")
-            print(self._player.position.y)
             self._game_over = True
-
 
     def platform_generation(self):
         """
@@ -259,6 +255,7 @@ class Model:
             if pygame.sprite.spritecollideany(platform, self._platforms):
                 continue
             self._platforms.add(platform)
+
     def set_difficulty(self, difficulty):
         """
         Sets the difficulty of the game
@@ -268,6 +265,7 @@ class Model:
                 1 is hard, 0.75 is medium, 0.5 is easy
         """
         self._game_difficulty = difficulty
+
     def increase_score(self):
         """
         Increases the private attribute _score by 1
@@ -313,6 +311,7 @@ class Model:
             The score attribute
         """
         return self._score
+
     @property
     def game_over(self):
         """
