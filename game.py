@@ -36,6 +36,7 @@ class Game:
         """
         self._clock = pygame.time.Clock()
         self._fps = 60
+        self._timer = 60 * self._fps
         self._screen = pygame.display.set_mode((WIDTH, HEIGHT))
         ground = Platform(surf=pygame.Surface((200, 20)), center=(200, 445))
         platforms = pygame.sprite.Group()
@@ -83,7 +84,7 @@ class Game:
             self._view.draw_menu(self._screen)
             pygame.display.update()
         self._model.set_difficulty(difficulty)
-        while not self._model.game_over:
+        while not self._model.game_over and self._timer > 0:
             if self.camera() and self._model.player.velocity.y < 0:
                 self._model.increase_score()
             self._model.platform_generation()
@@ -92,8 +93,11 @@ class Game:
             self._controller.update_game()
             self._model.update(self._controller.left_right, self._controller.jumping)
             self._model.check_player_off_screen()
-            pygame.display.update()
             self._clock.tick(self._fps)
+            self._timer -= 1
+            time = format(self._timer / self._fps, ".2f")
+            self._view.draw_timer(time, self._screen)
+            pygame.display.update()
         while True:
             self._view.draw_game_over(self._screen)
             self._controller.update_game_over()

@@ -49,7 +49,10 @@ class View:
         displaysurface.blit(self._model.player._image, self._model.player.rect)
         for platform in self._model.platforms:
             displaysurface.blit(platform.surf, platform.rect)
-
+    def draw_timer(self, time, displaysurface):
+        timer_text = font.render(time, True, (255, 255, 255))
+        displaysurface.blit(timer_text, timer_text.get_rect(center = (200,50)))
+        
     def draw_score(self, displaysurface):
         """
         Draws the score onto the display
