@@ -40,9 +40,7 @@ class Game:
         self._clock = pygame.time.Clock()
         self._fps = 60
         self._screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        ground = Platform(
-            surf=pygame.Surface((200, 20)), center=(200, 445)
-        )
+        ground = Platform(surf=pygame.Surface((200, 20)), center=(200, 445))
         platforms = pygame.sprite.Group()
         platforms.add(ground)
         self._controller = Controller()
@@ -55,6 +53,9 @@ class Game:
 
         Args:
             none
+
+        Returns:
+            A bool representing if the camera needs to move or not.
         """
         if self._model.player.rect.top <= HEIGHT / 3:
             new_position_y = self._model.player.position.y + abs(
