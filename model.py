@@ -244,11 +244,19 @@ class Model:
             )
 
             center_platform = (new_platform_center_x, new_platform_center_y)
-            platform = Platform(surf=surf, center=center_platform)
+            platform = Platform(surf, center_platform)
             if pygame.sprite.spritecollideany(platform, self._platforms):
                 continue
             self._platforms.add(platform)
+    def set_difficulty(self, difficulty):
+        """
+        Sets the difficulty of the game
 
+        Args:
+            difficulty: float indicating the difficulty of the game
+                1 is hard, 0.75 is medium, 0.5 is easy
+        """
+        self._game_difficulty = difficulty
     def increase_score(self):
         """
         Increases the private attribute _score by 1
@@ -306,7 +314,7 @@ class Platform(pygame.sprite.Sprite):
             the platform occupies.
     """
 
-    def __init__(self, surf=None, color=(128, 128, 128), center=None) -> None:
+    def __init__(self, surf, center, color=(128, 128, 128)) -> None:
         """
         Initializes the platforms.
 
@@ -316,15 +324,10 @@ class Platform(pygame.sprite.Sprite):
             topleft: A tuple representing the top left platform location. Defaults to None.
         """
         super().__init__()
-        if surf is None:
-            self._surf = pygame.Surface((random.randint(50, 100), 12))
-        else:
-            self._surf = surf
+        self._surf = surf
+        self._color = color
         self._surf.fill(color)
-        if center is None:
-            center = (random.randint(0, 400), random.randint(0, 450))
-        else:
-            center = center
+        self._center = center
         self._rect = self._surf.get_rect(center=center)
 
     def set_rect(self, x, y):
@@ -402,7 +405,12 @@ class Player(pygame.sprite.Sprite):
         self._image = pygame.image.load("sprites/TestRocket.png")
         self._character_width = 35
         self._image = pygame.transform.scale(
-            self._image, (self._character_width, self._character_width * (self._image.get_height() / self._image.get_width()))
+            self._image,
+            (
+                self._character_width,
+                self._character_width
+                * (self._image.get_height() / self._image.get_width()),
+            ),
         )
         self._rect = self._image.get_rect(center=self._position)
 
