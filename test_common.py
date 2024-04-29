@@ -2,8 +2,6 @@
 This module create functions for commonly run test files.
 """
 
-from game import Game
-
 
 def _is_private_variable(class_name, var_name):
     """
@@ -30,7 +28,7 @@ def _is_private_variable(class_name, var_name):
     )
 
 
-def check_private_var(class_name, _):
+def check_private_var(class_name):
     """
     Check whether a class has at least one private variable.
 
@@ -43,8 +41,7 @@ def check_private_var(class_name, _):
     Returns:
         True if the class has at least one private variable and False otherwise.
     """
-    game = Game()
-    instance = class_name(game)
+    instance = class_name()
     private_variables = [
         attr for attr in dir(instance) if _is_private_variable(class_name, attr)
     ]
