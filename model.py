@@ -402,7 +402,12 @@ class Player(pygame.sprite.Sprite):
         self._image = pygame.image.load("sprites/TestRocket.png")
         self._character_width = 35
         self._image = pygame.transform.scale(
-            self._image, (self._character_width, self._character_width * (self._image.get_height() / self._image.get_width()))
+            self._image,
+            (
+                self._character_width,
+                self._character_width
+                * (self._image.get_height() / self._image.get_width()),
+            ),
         )
         self._rect = self._image.get_rect(center=self._position)
 
