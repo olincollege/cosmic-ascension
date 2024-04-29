@@ -109,10 +109,10 @@ def test_controller_updates(keystroke, x_move, y_move):
         y_move: A bool representing the expected jump status when pressing a key.
     """
     pygame.init()
-    instance = Controller()
+    instance = Controller(None)
     # post the event
     pygame.event.post(keystroke)
-    instance.update()
+    instance.update_game()
 
     x_move_result = instance.left_right
     y_move_result = instance.jumping
