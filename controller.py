@@ -73,6 +73,17 @@ class Controller:
         return self._jumping
 
     @property
+    def dead(self):
+        """
+        Returns the dead bool as a private attribute
+        Args:
+            none
+        Returns:
+            If the player is dead or not
+        """
+        return self._dead
+
+    @property
     def left_right(self):
         """
         Returns the horizontal movement as a private attribute
