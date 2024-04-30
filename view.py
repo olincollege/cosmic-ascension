@@ -1,6 +1,8 @@
 """
-This module creates a class to generate a view for a user based on the model. 
+This module creates a class to generate a view for a user based on the model.
 It acts as the View section of MVC architecture.
+
+Note: This file cannot be tested as it controls display and visuals.
 """
 
 import pygame
@@ -18,7 +20,7 @@ class View:
     Attributes:
         _model: An private attribute of an instance of the model to be viewed.
     """
-    
+
     def __init__(self, model) -> None:
         """
         Initializes the model to be viewed.
@@ -35,7 +37,9 @@ class View:
         self._easy_button = Button((25, 200), "EASY")
         self._medium_button = Button((150, 200), "MEDIUM")
         self._hard_button = Button((275, 200), "HARD")
-        self._rocket_move_sprite = pygame.image.load("sprites/rocket_move_0.png")
+        self._rocket_move_sprite = pygame.image.load(
+            "sprites/rocket_move_0.png"
+        )
         self._rocket_move_sprite = pygame.transform.scale(
             self._rocket_move_sprite,
             (
@@ -66,9 +70,13 @@ class View:
         for platform in self._model.platforms:
             displaysurface.blit(platform.surf, platform.rect)
         if self._model.player.velocity.y < 0:
-            displaysurface.blit(self._rocket_move_sprite, self._model.player.rect)
+            displaysurface.blit(
+                self._rocket_move_sprite, self._model.player.rect
+            )
         else:
-            displaysurface.blit(self._model.player._image, self._model.player.rect)
+            displaysurface.blit(
+                self._model.player._image, self._model.player.rect
+            )
 
     def draw_timer(self, time, displaysurface):
         timer_text = FONT.render(time, True, (255, 255, 255))
@@ -82,18 +90,22 @@ class View:
             displaysurface: A surface object representing the window
                 to view.
         """
-        score_text = FONT.render(f"SCORE: {self._model.score}", True, (255, 255, 255))
+        score_text = FONT.render(
+            f"SCORE: {self._model.score}", True, (255, 255, 255)
+        )
         displaysurface.blit(score_text, (10, 10))
 
     def draw_game_over(self, displaysurface):
         displaysurface.fill((0, 0, 0))
         game_over = FONT.render("GAME OVER", True, (255, 255, 255))
-        score_text = FONT.render(f"SCORE: {self._model.score}", True, (255, 255, 255))
+        score_text = FONT.render(
+            f"SCORE: {self._model.score}", True, (255, 255, 255)
+        )
         displaysurface.blit(game_over, game_over.get_rect(center=(200, 150)))
         displaysurface.blit(score_text, score_text.get_rect(center=(200, 200)))
         self._background_sound.stop()
         self._end_sound.play()
-        
+
     @property
     def easy_button(self):
         """
@@ -145,7 +157,9 @@ class Button:
         self._button_surf.fill(self._button_color)
         self._button_rect = self._button_surf.get_rect(topleft=self._topleft)
         self._text_surf = FONT.render(self._text, True, self._text_color)
-        self._text_rect = self._text_surf.get_rect(center=self._button_rect.center)
+        self._text_rect = self._text_surf.get_rect(
+            center=self._button_rect.center
+        )
 
     def display(self, displaysurface):
         displaysurface.blit(self._button_surf, self._button_rect)

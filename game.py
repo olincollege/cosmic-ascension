@@ -1,6 +1,9 @@
 """
 This module creates instances of classes in order to create
 a full occurance of the game.
+
+Note: This file cannot be tested as it mainly calls other functions
+and edits the visual display.
 """
 
 import pygame
@@ -64,7 +67,8 @@ class Game:
             )
             for plat in self._model.platforms:
                 plat.set_rect(
-                    plat.rect.x, plat.rect.y + abs(self._model.player.velocity.y)
+                    plat.rect.x,
+                    plat.rect.y + abs(self._model.player.velocity.y),
                 )
                 if plat.rect.top >= HEIGHT:
                     plat.kill()
@@ -99,7 +103,9 @@ class Game:
             self._view.draw_game(self._screen)
             self._view.draw_score(self._screen)
             self._controller.update_game()
-            self._model.update(self._controller.left_right, self._controller.jumping)
+            self._model.update(
+                self._controller.left_right, self._controller.jumping
+            )
             self._model.check_player_off_screen()
             self._clock.tick(self._fps)
             self._timer -= 1
