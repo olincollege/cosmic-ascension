@@ -258,11 +258,13 @@ class Model:
             int(max_right - (full_range / 2) * (1 - self._game_difficulty)) - 1
         )
         # Calculate landing x value
-        x_landing = random.choice([
-            i
-            for i in range(max_left, max_right)
-            if i not in range(minimum_left_x, minimum_right_x)
-        ])
+        x_landing = random.choice(
+            [
+                i
+                for i in range(max_left, max_right)
+                if i not in range(minimum_left_x, minimum_right_x)
+            ]
+        )
         return x_landing
 
     def calculate_platform_center_x(
@@ -431,7 +433,8 @@ class Platform(pygame.sprite.Sprite):
         Attributes:
             _surf: A pygame.Surface() object that represents the surface of the
                 platform
-            _rect: A pygame.Rect() object that represents the rect of the platform
+            _rect: A pygame.Rect() object that represents the rect of the
+                platform
             _color: A tuple representing the RGB color of the platform
         """
         super().__init__()
