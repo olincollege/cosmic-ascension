@@ -2,6 +2,7 @@
 This module creates a class to interact with data and the controller of
 user inputs. It acts as the Model section of MVC architecture.
 """
+
 import random
 import math
 import pygame
@@ -14,28 +15,6 @@ class Model:
     """
     Class that acts as Model part of MVC architecture.
     Updates the data related to the game play.
-
-    Attributes:
-        _gravity: pygame.math.Vector2 that represents
-            the gravity in the game
-        _friction: An float representing the friction
-             associated
-            with the characters interactions with
-                objects in game.
-        _player: An instance of the Player class
-            representing the player character
-        _platform_num: An int representing the max
-            number of platforms generated at any given time
-        _platforms: pygame.sprite.Group() of platforms
-            in the game
-        _game_difficulty: An int representing the difficulty
-            of the game. 1 is the max difficulty, 0.5 is the
-            game's easy mode, and 0.75 is the game's medium
-        _score: int representing the score of the game
-        _screen_width: int representing the width of the
-            display screen
-        _screen_height: int representing the height of the
-            display screen
     """
 
     def __init__(self, platforms, width, height) -> None:
@@ -90,9 +69,10 @@ class Model:
         and jumps acting on it.
 
         Args:
-            x_acceleration: A float representing how fast the character accelerates
-            in a horizontal direction.
-            jumping: A bool representing if the character is jumping or not.
+            x_acceleration: A float representing how fast the character
+                accelerates in a horizontal direction.
+            jumping: A bool representing if the character is jumping
+                or not.
         """
         # Set the player x acceleration and move character based on it
         self._player.move(x_acceleration)
@@ -113,18 +93,27 @@ class Model:
                         hits[0].rect.top - self._player.rect.height / 2,
                     )
                 )
-                # If the player is holding down the space bar, override the previous
-                # y velocity setting and change it to jump velocity
+                # If the player is holding down the space bar, override the
+                # previous y velocity setting and change it to jump velocity
                 if jumping:
                     self._player.set_velocity(
-                        VECTOR(self._player.velocity.x, self._player.jump_velocity)
+                        VECTOR(
+                            self._player.velocity.x, self._player.jump_velocity
+                        )
                     )
                     self._jump_sound.play()
         # Update the player's rect
         self._player.update()
 
     def check_player_off_screen(self):
-        if self._player.position.x < 0 or self._player.position.x > self._screen_width:
+        """
+        Checks if the player is off screen. If so,
+        switches game to game over
+        """
+        if (
+            self._player.position.x < 0
+            or self._player.position.x > self._screen_width
+        ):
             self._game_over = True
         if self._player.position.y > self._screen_height:
             self._game_over = True
@@ -132,9 +121,6 @@ class Model:
     def platform_generation(self):
         """
         Controls generation of platforms during game play
-
-        Args:
-            none
 
         Note:
             The calculation for the platform distances are based off
@@ -172,93 +158,198 @@ class Model:
             # more leeway at higher difficult to account for reaction
             # time. Can't expect player to make perfect jump to
             # maximize height and distance every time
-            player_width = self._player.rect.width
-            max_x_distance -= player_width * 3.5 * self._game_difficulty
+            max_x_distance -= (
+                self._player.rect.width * 3.5 * self._game_difficulty
+            )
 
             # Accounting for difficulty level
             max_x_distance = max_x_distance * self._game_difficulty
 
             # Calculate maximum reachable range
-            max_left = left - max_x_distance
-            max_right = right + max_x_distance
+            max_left = int(left - max_x_distance)
+            max_right = int(right + max_x_distance)
 
             # Calculating range where player can reach max height
-            total_range = max_right - max_left
-            left_reach_max = max_left + total_range / 4
-            right_reach_max = max_right - total_range / 4
+            left_reach_max, right_reach_max = (
+                self.calculate_range_player_reach_max_height(
+                    max_left, max_right
+                )
+            )
 
-            # Calculating range of x that player can reach and are still on screen
+            # Calculating range of x that player can reach and are still on
+            # screen
             if max_left < 0:
                 max_left = 0
             if max_right > self._screen_width:
                 max_right = self._screen_width
 
-            # Account for difficulty
-            max_left = int(max_left)
-            max_right = int(max_right)
-            full_range = max_right - max_left
-            minimum_left_x = (
-                int(max_left + (full_range / 2) * (1 - self._game_difficulty)) + 1
-            )
-            minimum_right_x = (
-                int(max_right - (full_range / 2) * (1 - self._game_difficulty)) - 1
+            # Calculate landing x value
+            x_landing = self.calculate_x_landing(max_left, max_right)
+
+            # Calculate x of center of new platform
+            new_platform_center_x = self.calculate_platform_center_x(
+                x_landing, new_platform_width, center
             )
 
-            # Calculate landing x value
-            x_landing = random.choice(
-                [
-                    i
-                    for i in range(max_left, max_right)
-                    if i not in range(minimum_left_x, minimum_right_x)
-                ]
+            # Calculate y of center of new platform
+            new_platform_center_y = self.calculate_platform_center_y(
+                (left_reach_max, right_reach_max),
+                x_landing,
+                max_y_height,
+                center,
+                velocity_x_max,
+                new_platform_height,
             )
-            # Check if player needs to jump left or right of current platform
-            if x_landing < center[0]:
-                is_left = True
-            else:
-                is_left = False
 
             # Calculate center of new platform
-            if x_landing < new_platform_width / 2:
-                new_platform_center_x = new_platform_width / 2
-            elif x_landing > (self._screen_width - new_platform_width / 2):
-                new_platform_center_x = self._screen_width - new_platform_width / 2
-            else:
-                if is_left:
-                    new_platform_center_x = (
-                        x_landing - new_platform_width / 2 + player_width / 2
-                    )
-                else:
-                    new_platform_center_x = (
-                        x_landing + new_platform_width / 2 - player_width / 2
-                    )
-
-            # Check if landing is in range of where max height is reachable.
-            # If not, calculate max reachable y
-            if x_landing > left_reach_max or x_landing < right_reach_max:
-                max_y_reach = max_y_height
-            else:
-                if x_landing < left_reach_max:
-                    x_distance = left_reach_max - x_landing
-                else:
-                    x_distance = x_landing - right_reach_max
-                time = x_distance / velocity_x_max
-                max_y_reach = max_y_height - 0.5 * self._gravity.y * time**2
-            max_y_reach = int(max_y_reach)
-            max_y_reach_point = center[1] - max_y_reach
-
-            # Adjust difficulty level
-            minimum_y = center[1] - max_y_reach + 1
-
-            new_platform_center_y = (
-                random.randint(max_y_reach_point, minimum_y) + new_platform_height / 2
-            )
-
             center_platform = (new_platform_center_x, new_platform_center_y)
             platform = Platform(surf, center_platform)
-            if pygame.sprite.spritecollideany(platform, self._platforms):
-                continue
             self._platforms.add(platform)
+
+    def calculate_range_player_reach_max_height(self, max_left, max_right):
+        """
+        Calculates range in which the player can reach the maximum height
+
+        Args:
+            max_left: int that represents the maximum left x point that can be
+                reached
+            max_right: int that represents the maximum right x point that can
+                be reached
+
+        Return:
+            left_reach_max and right_reach_max which are both floats that
+            represent the point bounds in which the player can jump to its
+            maximum height
+
+        Note: This is based on projectile motion
+        """
+        # Calculating range where player can reach max height
+        total_range = max_right - max_left
+        left_reach_max = max_left + total_range / 4
+        right_reach_max = max_right - total_range / 4
+        return left_reach_max, right_reach_max
+
+    def calculate_x_landing(self, max_left, max_right):
+        """
+        Calculates the x point that the player can land on.
+        This is not the same as the furtherest point the
+        player can reach. It is simply a random point that
+        the player can reach and the game is using to generate
+        a platform.
+
+        Args:
+            max_left: int that represents the maximum left x point that can be
+                reached
+            max_right: int that represents the maximum right x point that can
+                be reached
+
+        Return:
+            x_landing: An int that represents the x coord of the landing
+                point of the player the game will use to generate the
+                platform
+        """
+        # Account for difficulty. Harder difficulties will have the
+        # minimum increased
+        full_range = max_right - max_left
+        minimum_left_x = (
+            int(max_left + (full_range / 2) * (1 - self._game_difficulty)) + 1
+        )
+        minimum_right_x = (
+            int(max_right - (full_range / 2) * (1 - self._game_difficulty)) - 1
+        )
+        # Calculate landing x value
+        x_landing = random.choice([
+            i
+            for i in range(max_left, max_right)
+            if i not in range(minimum_left_x, minimum_right_x)
+        ])
+        return x_landing
+
+    def calculate_platform_center_x(
+        self, x_landing, new_platform_width, center
+    ):
+        """
+        Calculates the x coord of the center of the new platform
+
+        Args:
+            x_landing: An int that represents the x coord of the landing
+                point of the player the game will use to generate the
+                platform
+            new_platform_width: An int that represents the width of the
+                new platform
+            center: A tuple representing the center of the old platform
+        """
+        # Check if player needs to jump left or right of current platform
+        if x_landing < center[0]:
+            is_left = True
+        else:
+            is_left = False
+
+        # Calculate center of new platform
+        if x_landing < new_platform_width / 2:
+            new_platform_center_x = new_platform_width / 2
+        elif x_landing > (self._screen_width - new_platform_width / 2):
+            new_platform_center_x = self._screen_width - new_platform_width / 2
+        else:
+            if is_left:
+                new_platform_center_x = x_landing - new_platform_width / 2
+            else:
+                new_platform_center_x = x_landing + new_platform_width / 2
+        return new_platform_center_x
+
+    def calculate_platform_center_y(
+        self,
+        reach_max,
+        x_landing,
+        max_y_height,
+        center,
+        velocity_x_max,
+        new_platform_height,
+    ):
+        """
+        Calculates the y coord of the center of the new platform
+
+        Args:
+            reach_max: A tuple that represents the bounds in which the
+                player can obtain the maximum height
+            x_landing: An int that represents the x coord of the landing
+                point of the player the game will use to generate the
+                platform
+            max_y_height: A float representing maximum height that the
+                player can reach
+            center: A tuple representing the center of the old platform
+            velocity_x_max: A float representing the maximum velocity
+                that the player can reach based on the length of the
+                previous platform
+            new_platform_height: An int representing the height of
+                the new platform
+
+        Returns:
+            An int, new_platform_center_y that represents the y coord
+                of the new platform
+        """
+        # Check if landing is in range of where max height is reachable.
+        # If not, calculate max reachable y
+        if x_landing > reach_max[0] or x_landing < reach_max[1]:
+            max_y_reach = max_y_height
+        else:
+            if x_landing < reach_max[0]:
+                x_distance = reach_max[0] - x_landing
+            else:
+                x_distance = x_landing - reach_max[1]
+            time = x_distance / velocity_x_max
+            max_y_reach = max_y_height - 0.5 * self._gravity.y * time**2
+        max_y_reach = int(max_y_reach)
+        max_y_reach_point = center[1] - max_y_reach
+
+        # Adjust difficulty level
+        minimum_y = center[1] - max_y_reach + 1
+
+        new_platform_center_y = (
+            random.randint(max_y_reach_point, minimum_y)
+            + new_platform_height / 2
+        )
+        return new_platform_center_y
 
     def set_difficulty(self, difficulty):
         """
@@ -273,21 +364,14 @@ class Model:
     def increase_score(self):
         """
         Increases the private attribute _score by 1
-
-        Args:
-            None
-
-        Return:
-            None
         """
         self._score += 1
 
     @property
     def player(self):
         """
-        Returns the player as a private attribute
-        Args:
-            none
+        Allows private attribute _player to be output
+
         Returns:
             The player attribute of the model.
         """
@@ -296,9 +380,8 @@ class Model:
     @property
     def platforms(self):
         """
-        Returns the platforms objects as a private attribute
-        Args:
-            none
+        Allows private attribute platforms to be output
+
         Returns:
             The platforms attribute of the model.
         """
@@ -307,10 +390,8 @@ class Model:
     @property
     def score(self):
         """
-        Returns the score of the game
+        Allows private attribute score to be output
 
-        Args:
-            none
         Returns:
             The score attribute
         """
@@ -325,16 +406,6 @@ class Model:
             A boolean representing if game is over
         """
         return self._game_over
-
-    @property
-    def game_difficulty(self):
-        """
-        Allows private attribute _game_difficulty to be ouput
-
-        Return:
-            A float representing the game difficulty
-        """
-        return self._game_difficulty
 
 
 class Platform(pygame.sprite.Sprite):
@@ -353,9 +424,15 @@ class Platform(pygame.sprite.Sprite):
         Initializes the platforms.
 
         Args:
-            surf: A surface representing platforms. Defaults to None.
-            color: A tuple representing the platform RBG color code. Defaults to (0, 255, 0).
-            topleft: A tuple representing the top left platform location. Defaults to None.
+            surf: A surface representing platforms
+            center: A tuple representing the center of the platform location
+            color: A tuple representing the platform RGB color code. Defaults to
+                (128, 128, 128).
+        Attributes:
+            _surf: A pygame.Surface() object that represents the surface of the
+                platform
+            _rect: A pygame.Rect() object that represents the rect of the platform
+            _color: A tuple representing the RGB color of the platform
         """
         super().__init__()
         self._surf = surf
@@ -378,9 +455,8 @@ class Platform(pygame.sprite.Sprite):
     @property
     def rect(self):
         """
-        Returns the rectangle object as a private attribute
-        Args:
-            none
+        Allows private attribute _rect to be output
+
         Returns:
             The rectangle attribute of the model.
         """
@@ -389,16 +465,15 @@ class Platform(pygame.sprite.Sprite):
     @property
     def surf(self):
         """
-        Returns the surface object as a private attribute
-        Args:
-            none
+        Allows private attribute _Surf to be output
+
         Returns:
             The surface attribute of the model.
         """
         return self._surf
 
 
-class Player():
+class Player:
     """
     A class to generate and dictate actions of the game
     character sprite.
@@ -546,4 +621,3 @@ class Player():
             The rectangle attribute of the model.
         """
         return self._rect
-    

@@ -64,7 +64,8 @@ class Game:
             )
             for plat in self._model.platforms:
                 plat.set_rect(
-                    plat.rect.x, plat.rect.y + abs(self._model.player.velocity.y)
+                    plat.rect.x,
+                    plat.rect.y + abs(self._model.player.velocity.y),
                 )
                 if plat.rect.top >= HEIGHT:
                     plat.kill()
@@ -85,6 +86,7 @@ class Game:
             pygame.display.update()
 
         self._model.set_difficulty(difficulty)
+
         current_time = 0
         can_increase_score = True
         while not self._model.game_over and self._timer > 0:
@@ -95,11 +97,14 @@ class Game:
                 can_increase_score = False
             if current_time - self._timer > 1:
                 can_increase_score = True
+
             self._model.platform_generation()
             self._view.draw_game(self._screen)
             self._view.draw_score(self._screen)
             self._controller.update_game()
-            self._model.update(self._controller.left_right, self._controller.jumping)
+            self._model.update(
+                self._controller.left_right, self._controller.jumping
+            )
             self._model.check_player_off_screen()
             self._clock.tick(self._fps)
             self._timer -= 1
