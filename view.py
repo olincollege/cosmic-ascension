@@ -93,7 +93,6 @@ class View:
         displaysurface.blit(score_text, score_text.get_rect(center=(200, 200)))
         self._background_sound.stop()
         self._end_sound.play()
-        print("sound played")
         
     @property
     def easy_button(self):
