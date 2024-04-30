@@ -13,5 +13,5 @@ Cosmic Ascension is a single player, platformer video game. The player controls 
 ## Playing the game
 
 1. To run the game, first run the command `pip install pygame`.
-2. Then run the command 'sudo apt install pulseaudio'.
+2. Then run the command `sudo apt install pulseaudio`.
 3. Then clone this repository and run the `main.py` file. Now play!
