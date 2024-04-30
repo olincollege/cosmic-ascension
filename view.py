@@ -7,6 +7,7 @@ import pygame
 
 
 pygame.font.init()
+pygame.mixer.init()
 FONT = pygame.font.Font("Font/PressStart2P-Regular.ttf", 15)
 
 
@@ -26,6 +27,11 @@ class View:
             model: An instance of the Model class.
         """
         self._model = model
+        self._background_sound = pygame.mixer.Sound(
+            "sounds/background_sound.mp3"
+        )
+        self._background_sound.play(loops=-1)
+        self._end_sound = pygame.mixer.Sound("sounds/end_sound.wav")
         self._easy_button = Button((25, 200), "EASY")
         self._medium_button = Button((150, 200), "MEDIUM")
         self._hard_button = Button((275, 200), "HARD")
@@ -85,7 +91,10 @@ class View:
         score_text = FONT.render(f"SCORE: {self._model.score}", True, (255, 255, 255))
         displaysurface.blit(game_over, game_over.get_rect(center=(200, 150)))
         displaysurface.blit(score_text, score_text.get_rect(center=(200, 200)))
-
+        self._background_sound.stop()
+        self._end_sound.play()
+        print("sound played")
+        
     @property
     def easy_button(self):
         """
