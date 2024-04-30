@@ -115,7 +115,7 @@ class Game:
             self._view.draw_timer(time, self._screen)
             pygame.display.update()
 
+        self._view.draw_game_over(self._screen)
         while True:
-            self._view.draw_game_over(self._screen)
             self._controller.update_game_over()
             pygame.display.update()
