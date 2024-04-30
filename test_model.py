@@ -3,6 +3,7 @@ import pygame
 import pytest
 import math
 
+pygame.init()
 vector = pygame.math.Vector2
 
 # Test cases for Model
@@ -57,7 +58,9 @@ def test_check_player_off_screen(position, end_game):
     the sprite has left the game window and reports the game as over.
 
     Args:
-
+        position: A vector tuple representing the players x and y position
+        end_game: A bool representing the expected value of whether the
+            game is over or not depending on the position.
     """
     # Set Model
     instance = Model(0, 400, 450)
@@ -75,6 +78,14 @@ def test_check_player_off_screen(position, end_game):
 
 @pytest.mark.parametrize("in_difficulty,out_difficulty", model_set_difficulty)
 def test_set_difficulty(in_difficulty, out_difficulty):
+    """
+    Checks that the set_difficulty method correctly sets the inputed difficulty.
+
+    Args:
+        in_difficulty: A float representing the inputted difficulty level
+        out_difficulty: A float representing the expected output difficulty
+            level.
+    """
     instance = Model(0, 400, 450)
 
     # Set the difficulty
@@ -113,6 +124,14 @@ player_set_velocity = [
 
 @pytest.mark.parametrize("in_velocity,out_velocity", player_set_velocity)
 def test_set_velocity(in_velocity, out_velocity):
+    """
+    Checks that the set_difficulty method correctly sets the inputed difficulty.
+
+    Args:
+        in_difficulty: A float representing the inputted difficulty level
+        out_difficulty: A float representing the expected output difficulty
+            level.
+    """
     instance = Player(10, 0.12)
     instance.set_velocity(in_velocity)
     exp_velocity = instance.velocity
