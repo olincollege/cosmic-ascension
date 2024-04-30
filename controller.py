@@ -7,6 +7,7 @@ It acts as the Controller section of MVC architecture.
 import sys
 import pygame
 
+
 class Controller:
     """
     Dictates actions to be completed based on specified user inputs.
