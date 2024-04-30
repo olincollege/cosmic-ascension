@@ -3,7 +3,8 @@ This module contains unit tests for classes found in model.py.
 
 Not tested:
     Model:
-        update:
+        update: uses built in pygames functions and other tested functions,
+            uneccessary to test
         set_difficulty: setter function, uneccessary to test
     Platform:
         set_rect: setter function, uneccessary to test
