@@ -37,3 +37,19 @@ Authors
 ### fiona-giraffe
 
 ### TiredWoofles
+
+Sources
+-------
+For the rocket engine audio, background music & end screen sound: 
+
+https://pixabay.com/sound-effects/search/revving/
+
+https://pixabay.com/music/upbeat-euphoria-121294/
+
+https://www.soundsnap.com/tags/score
+
+For the character sprite rocketship & flames:
+
+https://www.pixilart.com/art/broken-rocket-ship-5bb8ca8c4a66eb9
+
+https://www.pixilart.com/art/a-little-flame-a0b518a80d32def
