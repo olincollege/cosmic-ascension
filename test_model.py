@@ -2,12 +2,6 @@ from model import Model, Platform, Player
 import pygame
 import pytest
 import math
-from test_common import (
-    check_private_var,
-    check_class_attribute,
-    check_class_property,
-    check_core_method,
-)
 
 vector = pygame.math.Vector2
 
@@ -21,7 +15,8 @@ model_check_player_off_screen = [
     # Window is width 400 height 450
     # Check that a position to the left is considered off screen and ends game
     (vector(-10, 100), True),
-    # Check that a position to the right of the screen is considered off screen and ends game
+    # Check that a position to the right of the screen is considered off screen
+    # and ends game
     (vector(410, 100), True),
     # Check that a position in the window doesn't end the game
     (vector(350, 100), False),
@@ -40,12 +35,13 @@ model_set_difficulty = [
 # Check that score correctly increases by 1
 def test_increase_score():
     """
-    Checks that the increase_score method correctly increments the score by 1 when run.
+    Checks that the increase_score method correctly increments the score by
+    1 when run.
 
     Args:
         none
     """
-    instance = Model(0, 0, 0)
+    instance = Model(0, 400, 450)
     instance.increase_score()
     exp_score = instance.score
 
@@ -56,6 +52,13 @@ def test_increase_score():
 
 @pytest.mark.parametrize("position,end_game", model_check_player_off_screen)
 def test_check_player_off_screen(position, end_game):
+    """
+    Checks that the check_player_off_screen method correctly registers when
+    the sprite has left the game window and reports the game as over.
+
+    Args:
+
+    """
     # Set Model
     instance = Model(0, 400, 450)
 
