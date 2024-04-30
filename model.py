@@ -2,6 +2,7 @@
 This module creates a class to interact with data and the controller of
 user inputs. It acts as the Model section of MVC architecture.
 """
+
 import random
 import math
 import pygame
@@ -90,7 +91,8 @@ class Model:
         and jumps acting on it.
 
         Args:
-            x_acceleration: A float representing how fast the character accelerates
+            x_acceleration: A float representing how fast the character
+            accelerates
             in a horizontal direction.
             jumping: A bool representing if the character is jumping or not.
         """
@@ -113,18 +115,24 @@ class Model:
                         hits[0].rect.top - self._player.rect.height / 2,
                     )
                 )
-                # If the player is holding down the space bar, override the previous
+                # If the player is holding down the space bar,
+                # override the previous
                 # y velocity setting and change it to jump velocity
                 if jumping:
                     self._player.set_velocity(
-                        VECTOR(self._player.velocity.x, self._player.jump_velocity)
+                        VECTOR(
+                            self._player.velocity.x, self._player.jump_velocity
+                        )
                     )
                     self._jump_sound.play()
         # Update the player's rect
         self._player.update()
 
     def check_player_off_screen(self):
-        if self._player.position.x < 0 or self._player.position.x > self._screen_width:
+        if (
+            self._player.position.x < 0
+            or self._player.position.x > self._screen_width
+        ):
             self._game_over = True
         if self._player.position.y > self._screen_height:
             self._game_over = True
@@ -187,7 +195,8 @@ class Model:
             left_reach_max = max_left + total_range / 4
             right_reach_max = max_right - total_range / 4
 
-            # Calculating range of x that player can reach and are still on screen
+            # Calculating range of x that player can reach and are
+            # still on screen
             if max_left < 0:
                 max_left = 0
             if max_right > self._screen_width:
@@ -198,10 +207,12 @@ class Model:
             max_right = int(max_right)
             full_range = max_right - max_left
             minimum_left_x = (
-                int(max_left + (full_range / 2) * (1 - self._game_difficulty)) + 1
+                int(max_left + (full_range / 2) * (1 - self._game_difficulty))
+                + 1
             )
             minimum_right_x = (
-                int(max_right - (full_range / 2) * (1 - self._game_difficulty)) - 1
+                int(max_right - (full_range / 2) * (1 - self._game_difficulty))
+                - 1
             )
 
             # Calculate landing x value
@@ -222,7 +233,9 @@ class Model:
             if x_landing < new_platform_width / 2:
                 new_platform_center_x = new_platform_width / 2
             elif x_landing > (self._screen_width - new_platform_width / 2):
-                new_platform_center_x = self._screen_width - new_platform_width / 2
+                new_platform_center_x = (
+                    self._screen_width - new_platform_width / 2
+                )
             else:
                 if is_left:
                     new_platform_center_x = (
@@ -251,7 +264,8 @@ class Model:
             minimum_y = center[1] - max_y_reach + 1
 
             new_platform_center_y = (
-                random.randint(max_y_reach_point, minimum_y) + new_platform_height / 2
+                random.randint(max_y_reach_point, minimum_y)
+                + new_platform_height / 2
             )
 
             center_platform = (new_platform_center_x, new_platform_center_y)
@@ -354,8 +368,10 @@ class Platform(pygame.sprite.Sprite):
 
         Args:
             surf: A surface representing platforms. Defaults to None.
-            color: A tuple representing the platform RBG color code. Defaults to (0, 255, 0).
-            topleft: A tuple representing the top left platform location. Defaults to None.
+            color: A tuple representing the platform RBG color code.
+                Defaults to (0, 255, 0).
+            topleft: A tuple representing the top left platform location.
+                Defaults to None.
         """
         super().__init__()
         self._surf = surf
@@ -398,7 +414,7 @@ class Platform(pygame.sprite.Sprite):
         return self._surf
 
 
-class Player():
+class Player:
     """
     A class to generate and dictate actions of the game
     character sprite.
@@ -557,7 +573,6 @@ class Player():
             The rectangle attribute of the model.
         """
         return self._rect
-    
 
 
 in_velocity = VECTOR(0, 0)
