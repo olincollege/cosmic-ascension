@@ -8,7 +8,7 @@ Not tested:
     Platform:
         set_rect: setter function, uneccessary to test
     Player:
-        update:
+        update: runs built in pygame function, uneccessary to test
         set_position: setter function, uneccessary to test
         set_velocity: setter function, uneccessary to test
 """
