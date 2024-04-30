@@ -1,10 +1,24 @@
-from model import Model, Platform, Player
+"""
+This module contains unit tests for classes found in model.py.
+
+Not tested:
+    Model:
+        update:
+        set_difficulty: setter function, uneccessary to test
+    Platform:
+        set_rect: setter function, uneccessary to test
+    Player:
+        update:
+        set_position: setter function, uneccessary to test
+        set_velocity: setter function, uneccessary to test
+"""
+
 import pygame
 import pytest
-import math
+from model import Model, Player
 
 pygame.init()
-vector = pygame.math.Vector2
+VECTOR = pygame.math.Vector2
 
 # Test cases for Model
 
@@ -15,21 +29,12 @@ model_platform_generation = []
 model_check_player_off_screen = [
     # Window is width 400 height 450
     # Check that a position to the left is considered off screen and ends game
-    (vector(-10, 100), True),
+    (VECTOR(-10, 100), True),
     # Check that a position to the right of the screen is considered off screen
     # and ends game
-    (vector(410, 100), True),
+    (VECTOR(410, 100), True),
     # Check that a position in the window doesn't end the game
-    (vector(350, 100), False),
-]
-
-model_set_difficulty = [
-    # Check that hard mode implements correctly
-    (1.0, 1.0),
-    # Check that medium implements correctly
-    (0.75, 0.75),
-    # Check that easy implements correctly
-    (0.5, 0.5),
+    (VECTOR(350, 100), False),
 ]
 
 
@@ -76,63 +81,60 @@ def test_check_player_off_screen(position, end_game):
     assert exp_output == end_game
 
 
-@pytest.mark.parametrize("in_difficulty,out_difficulty", model_set_difficulty)
-def test_set_difficulty(in_difficulty, out_difficulty):
-    """
-    Checks that the set_difficulty method correctly sets the inputed difficulty.
-
-    Args:
-        in_difficulty: A float representing the inputted difficulty level
-        out_difficulty: A float representing the expected output difficulty
-            level.
-    """
-    instance = Model(0, 400, 450)
-
-    # Set the difficulty
-    instance.set_difficulty(in_difficulty)
-
-    # Get result
-    exp_difficulty = instance.game_difficulty
-
-    assert isinstance(exp_difficulty, float)
-    assert out_difficulty == exp_difficulty
-
-
 # Player test cases
 
-player_set_velocity = [
-    # Check that a zero velocity returns correctly
-    (vector(0, 0), [0, 0]),
-    # Check that a horizontal velocity returns correctly
-    (vector(1, 0), [1, 0]),
-    # Check that a vertical velocity returns correctly
-    (vector(0, 1), [0, 1]),
-    # Check that a negative horizontal velocity returns correctly
-    (vector(-1, 0), [-1, 0]),
-    # Check that a negative vertical velocity returns correctly
-    (vector(0, -1), [0, -1]),
-    # Check that velocity in both horizontal and vertical returns correctly
-    (vector(1, 1), [1, 1]),
-    # Check that negative velocity in both direction returns correctly
-    (vector(-1, -1), [-1, -1]),
-    # Check that a negative x and pos y returns correctly
-    (vector(1, -1), [1, -1]),
-    # Check that a negative x and pos y returns correctly
-    (vector(-1, 1), [-1, 1]),
+player_move = [
+    # Check that when the player is not moving their position remains same
+    # on platform
+    (0, False, True, [200, 310]),
+    # off platform (gravity)
+    (0, False, False, [200, 325]),
+    # Check when the player is moving left and not jumping
+    # on platform
+    (-0.5, False, True, [199.25, 310]),
+    # off platform
+    (-0.5, False, False, [199.25, 325]),
+    # Check when the player is moving right and not jumping
+    # on platform
+    (0.5, False, True, [200.75, 310]),
+    # off platform
+    (0.5, False, False, [200.75, 325]),
+    # Check when player is moving left and jumping on platform
+    # (not possible to jump off platform)
+    (-0.5, True, True, [199.25, 295]),
+    # Check when player is moving right and jumping
+    (0.5, True, True, [200.75, 295]),
+    # Check when a player is not moving horizontally and jumping
+    (0, True, True, [200, 295]),
 ]
 
 
-@pytest.mark.parametrize("in_velocity,out_velocity", player_set_velocity)
-def test_set_velocity(in_velocity, out_velocity):
+@pytest.mark.parametrize(
+    "x_accel,jumping,on_platform,out_position", player_move
+)
+def test_move(x_accel, jumping, on_platform, out_position):
     """
-    Checks that the set_difficulty method correctly sets the inputed difficulty.
+    Checks whether the move method correctly sets the player position
+    calculated with the x acceleration and jumping velocity.
 
     Args:
-        in_difficulty: A float representing the inputted difficulty level
-        out_difficulty: A float representing the expected output difficulty
-            level.
+        x_accel: A float representing the horizontal acceleration
+        jumping: A bool representing if the character is jumping or not
+        on_platform: A bool representing if the character is on a platform
+            or not. This dictates influence of gravity.
+        out_position: A pygame vector representing the expected x and
+            y position of player after move method
     """
-    instance = Player(10, 0.12)
-    instance.set_velocity(in_velocity)
-    exp_velocity = instance.velocity
-    assert exp_velocity == out_velocity
+    if on_platform:
+        y_velocity = 0
+    else:
+        y_velocity = 10
+
+    if jumping:
+        y_velocity -= 10
+
+    instance = Player(VECTOR(0, y_velocity), 0.12)
+    instance.move(x_accel)
+    exp_position = instance.position
+
+    assert exp_position == out_position
