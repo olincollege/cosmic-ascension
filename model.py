@@ -553,17 +553,6 @@ class Player:
         return self._position
 
     @property
-    def surf(self):
-        """
-        Returns the surface object as a private attribute
-        Args:
-            none
-        Returns:
-            The surface attribute of the model.
-        """
-        return self._surf
-
-    @property
     def rect(self):
         """
         Returns the rectangle object as a private attribute
@@ -573,11 +562,3 @@ class Player:
             The rectangle attribute of the model.
         """
         return self._rect
-
-
-in_velocity = VECTOR(0, 0)
-instance = Player(10, 0.12)
-instance.set_velocity(in_velocity)
-exp_velocity = instance.velocity
-
-print(exp_velocity)
