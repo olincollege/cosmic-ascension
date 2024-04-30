@@ -83,10 +83,18 @@ class Game:
             difficulty = self._controller.update_menu()
             self._view.draw_menu(self._screen)
             pygame.display.update()
+
         self._model.set_difficulty(difficulty)
+        current_time = 0
+        can_increase_score = True
         while not self._model.game_over and self._timer > 0:
             if self.camera() and self._model.player.velocity.y < 0:
-                self._model.increase_score()
+                if can_increase_score:
+                    self._model.increase_score()
+                current_time = self._timer
+                can_increase_score = False
+            if current_time - self._timer > 1:
+                can_increase_score = True
             self._model.platform_generation()
             self._view.draw_game(self._screen)
             self._view.draw_score(self._screen)
@@ -98,6 +106,7 @@ class Game:
             time = format(self._timer / self._fps, ".2f")
             self._view.draw_timer(time, self._screen)
             pygame.display.update()
+
         while True:
             self._view.draw_game_over(self._screen)
             self._controller.update_game_over()
