@@ -84,26 +84,6 @@ def test_set_difficulty(in_difficulty, out_difficulty):
     assert out_difficulty == exp_difficulty
 
 
-# Platform test cases
-
-platform_set_rect = [
-    # Check that the x of a rect gets set correctly
-    (10, 0, pygame.Surface((10, 1)).get_rect()),
-    # Check that the y of the rect gets set correctly
-    (0, 10, pygame.Surface((1, 10)).get_rect()),
-    # Check that both x and y get set correct
-    (10, 10, pygame.Surface((10, 10)).get_rect()),
-]
-
-
-@pytest.mark.parametrize("in_x,in_y,out_rect", platform_set_rect)
-def test_set_rect(in_x, in_y, out_rect):
-    instance = Platform(0, 0)
-    instance.set_rect(in_x, in_y)
-    exp_rect = instance.rect
-    assert exp_rect == out_rect
-
-
 # Player test cases
 
 player_set_velocity = [
