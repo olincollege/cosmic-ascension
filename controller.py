@@ -64,14 +64,14 @@ class Controller:
                     self._left_right = -0.5
                 if event.key == pygame.K_RIGHT:
                     self._left_right = 0.5
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
                     self._jumping = True
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT and self._left_right == -0.5:
                     self._left_right = 0.0
                 if event.key == pygame.K_RIGHT and self._left_right == 0.5:
                     self._left_right = 0.0
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
                     self._jumping = False
             if event.type == pygame.QUIT:
                 pygame.quit()
