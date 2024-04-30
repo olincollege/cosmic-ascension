@@ -69,6 +69,8 @@ class Model:
             display screen
         _screen_height: int representing the height of the
             display screen
+        _game_over: a boolian representing if player is on game over screen
+        _jump_sound: wav file for the sound of the rockets when character jumps
         """
         self._gravity = VECTOR(0, 0.35)
         self._friction = 0.12
@@ -80,6 +82,7 @@ class Model:
         self._screen_width = width
         self._screen_height = height
         self._game_over = False
+        self._jump_sound = pygame.mixer.Sound("sounds/rocketbrrrnoises.wav")
 
     def update(self, x_acceleration, jumping):
         """
@@ -116,6 +119,7 @@ class Model:
                     self._player.set_velocity(
                         VECTOR(self._player.velocity.x, self._player.jump_velocity)
                     )
+                    self._jump_sound.play()
         # Update the player's rect
         self._player.update()
 
