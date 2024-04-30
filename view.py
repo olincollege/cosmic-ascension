@@ -1,6 +1,8 @@
 """
-This module creates a class to generate a view for a user based on the model. 
+This module creates a class to generate a view for a user based on the model.
 It acts as the View section of MVC architecture.
+
+Note: This file cannot be tested as it controls display and visuals.
 """
 
 import pygame

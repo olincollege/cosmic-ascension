@@ -1,10 +1,4 @@
 from controller import Controller
-from test_common import (
-    check_private_var,
-    check_class_attribute,
-    check_class_property,
-    check_core_method,
-)
 import pygame
 import pytest
 from pygame.locals import *
@@ -44,7 +38,12 @@ controller_updates = [
     (
         pygame.event.Event(
             pygame.KEYDOWN,
-            {"mod": 0, "scancode": 30, "key": pygame.K_SPACE, "unicode": "space"},
+            {
+                "mod": 0,
+                "scancode": 30,
+                "key": pygame.K_SPACE,
+                "unicode": "space",
+            },
         ),
         0.0,
         True,
@@ -81,20 +80,17 @@ controller_updates = [
     (
         pygame.event.Event(
             pygame.KEYUP,
-            {"mod": 0, "scancode": 30, "key": pygame.K_SPACE, "unicode": "space"},
+            {
+                "mod": 0,
+                "scancode": 30,
+                "key": pygame.K_SPACE,
+                "unicode": "space",
+            },
         ),
         0.0,
         False,
     ),
 ]
-
-# private_properties = [
-#     (
-#         check_private_var(
-#             Controller,
-#         )
-#     )
-# ]
 
 
 @pytest.mark.parametrize("keystroke,x_move,y_move", controller_updates)
@@ -104,9 +100,11 @@ def test_controller_updates(keystroke, x_move, y_move):
     correct set of movements.
 
     Args:
-        keystroke: A pygame event representing a simulated pressed key from the user.
+        keystroke: A pygame event representing a simulated pressed
+            key from the user.
         x_move: A float representing the expected movement when pressing a key.
-        y_move: A bool representing the expected jump status when pressing a key.
+        y_move: A bool representing the expected jump status when
+            pressing a key.
     """
     pygame.init()
     instance = Controller(None)

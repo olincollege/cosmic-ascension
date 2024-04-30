@@ -446,8 +446,8 @@ class Platform(pygame.sprite.Sprite):
         Sets the rect of the platform.
 
         Args:
-            position: A tuple representing the x and y location
-                of the platform sprite.
+            x: An int representing the x location of the platform sprite.
+            y: An int representing the y location of the platform sprite.
         """
         self._rect.x = x
         self._rect.y = y
@@ -553,7 +553,7 @@ class Player:
 
     def move(self, x_acceleration):
         """
-        Dictates the horizontal motion of the player sprite.
+        Dictates the motion of the player sprite.
 
         Args:
             x_acceleration: An int representing horizontal
@@ -573,10 +573,11 @@ class Player:
     @property
     def jump_velocity(self):
         """
-        Returns whether or not player is jumping
+        Returns the players jump velocity, dependent on
+        whether or not player is jumping
 
         Returns:
-            boolean representing whether or not the player is jumping
+            float representing the vertical velocity
         """
         return self._jump_velocity
 

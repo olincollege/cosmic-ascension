@@ -1,6 +1,9 @@
 """
 This module creates instances of classes in order to create
 a full occurance of the game.
+
+Note: This file cannot be tested as it mainly calls other functions
+and edits the visual display.
 """
 
 import pygame
