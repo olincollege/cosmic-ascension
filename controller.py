@@ -14,14 +14,13 @@ class Controller:
     Attributes:
         _jumping: A bool representing whether the character is jumping
             or not.
-
         _left_right: A float representing the horizontal acceleration of the
             character.
     """
 
     def __init__(self, view) -> None:
         """
-        Initializes the default actions to be applied to the character.
+        Initializes attributes that store what the player is doing
 
         Args:
             none
@@ -31,6 +30,12 @@ class Controller:
         self._left_right = 0.0
 
     def update_menu(self):
+        """
+        Updates what happens in menu based on player input
+
+        Args:
+            None
+        """
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 position = event.pos
@@ -47,10 +52,10 @@ class Controller:
 
     def update_game(self):
         """
-        Updates the actions on the player based on key events.
+        Updates the actions of the player based player input
 
         Args:
-            none
+            None
         """
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -72,6 +77,12 @@ class Controller:
                 sys.exit()
 
     def update_game_over(self):
+        """
+        Updates the what happens in game over screen
+
+        Args:
+            None
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -84,7 +95,7 @@ class Controller:
         Args:
             none
         Returns:
-            If the player is jumping or not
+            If the player is jumping or not as boolean
         """
         return self._jumping
 
