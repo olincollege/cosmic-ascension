@@ -4,7 +4,6 @@ This module contains unit tests for the classes in controller.py
 
 import pygame
 import pytest
-from pygame.locals import *
 from controller import Controller
 
 
