@@ -1,4 +1,4 @@
-# Cosmic-Ascension 
+# cosmic-ascension 
 
 Website Link: https://olincollege.github.io/cosmic-ascension/
 
