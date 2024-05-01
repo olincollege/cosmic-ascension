@@ -49,7 +49,7 @@ class Model:
             _screen_height: int representing the height of the
                 display screen
             _game_over: a boolian representing if player is on game over screen
-            _jump_sound: wav file for the sound of the rockets when character 
+            _jump_sound: wav file for the sound of the rockets when character
                 jumps
         """
         self._gravity = VECTOR(0, 0.35)
@@ -612,6 +612,17 @@ class Player:
             The _position attribute of the model.
         """
         return self._position
+
+    @property
+    def image(self):
+        """
+        Returns the image sprite surface of the player
+
+        Return:
+            pygame.Surface() that is the sprite of the
+            player
+        """
+        return self._image
 
     @property
     def rect(self):
