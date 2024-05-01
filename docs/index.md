@@ -9,6 +9,8 @@ The goal of this project is to create an interactive program using the Python co
 Running Program and Gameplay
 ----------------------------
 
+Video Link: https://youtu.be/4vU0JIXvTUw
+
 ![](GameDemo.png)
 
 To run our program and play the game, first clone the repository at the following link.
