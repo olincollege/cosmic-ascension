@@ -160,7 +160,7 @@ class Model:
             # time. Can't expect player to make perfect jump to
             # maximize height and distance every time
             max_x_distance -= (
-                self._player.rect.width * 3.5 * self._game_difficulty
+                self._player.rect.width * 1.5 * self._game_difficulty
             )
 
             # Accounting for difficulty level
@@ -206,6 +206,8 @@ class Model:
             center_platform = (new_platform_center_x, new_platform_center_y)
             platform = Platform(surf, center_platform)
             self._platforms.add(platform)
+            assert platform.rect.left >= 0
+            assert platform.rect.right <= 400
 
     def calculate_range_player_reach_max_height(self, max_left, max_right):
         """
@@ -285,17 +287,18 @@ class Model:
             is_left = True
         else:
             is_left = False
+        half_width = math.ceil(new_platform_width / 2)
 
         # Calculate center of new platform
-        if x_landing < new_platform_width / 2:
-            new_platform_center_x = new_platform_width / 2
-        elif x_landing > (self._screen_width - new_platform_width / 2):
-            new_platform_center_x = self._screen_width - new_platform_width / 2
+        if x_landing < half_width:
+            new_platform_center_x = half_width
+        elif x_landing > (self._screen_width - half_width):
+            new_platform_center_x = self._screen_width - half_width
         else:
             if is_left:
-                new_platform_center_x = x_landing - new_platform_width / 2
+                new_platform_center_x = x_landing + half_width
             else:
-                new_platform_center_x = x_landing + new_platform_width / 2
+                new_platform_center_x = x_landing - half_width
         return new_platform_center_x
 
     def calculate_platform_center_y(
