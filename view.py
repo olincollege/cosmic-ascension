@@ -20,12 +20,12 @@ class View:
 
     def __init__(self, model) -> None:
         """
-        Initializes attributes that will be used to 
+        Initializes attributes that will be used to
         display the model
 
         Args:
             model: An instance of the Model class
-        
+
         Attributes:
             _model: An instance of Model class
             _background_sound: pygame.mixer.Sound() that
@@ -178,9 +178,10 @@ class Button:
     """
     Creates a the view for a button in the game
     """
+
     def __init__(self, topleft, text) -> None:
         """
-        Initializes attributes that will be used to 
+        Initializes attributes that will be used to
         display the button
 
         Attributes:
@@ -188,7 +189,7 @@ class Button:
                 coordinate of the button
             _text: A string representing the text to be displayed
                 on the button
-            _text_color: A tuple representing the RGB value of the 
+            _text_color: A tuple representing the RGB value of the
                 color the text of the button will be. This value
                 will be set to (0, 0, 0)
             _width: An int representing the width of the button.
@@ -196,11 +197,11 @@ class Button:
             _height: An int representing the height of the button
                 This value will be set to 50
             _button_color: A tuple representing the RGB value of the
-                color of the button. This value will be set to 
+                color of the button. This value will be set to
                 (210, 210, 210)
             _button_surf: A pygame.Surface() that represents the surface
                 of the button
-            _button_rect: A pygame.Rect() that represents the hitbox of 
+            _button_rect: A pygame.Rect() that represents the hitbox of
                 the button
             _text_surf: A pygame.Surface() that represents the surface
                 of the button text
