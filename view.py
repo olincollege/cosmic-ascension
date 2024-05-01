@@ -16,17 +16,33 @@ FONT = pygame.font.Font("Font/PressStart2P-Regular.ttf", 15)
 class View:
     """
     Creates the view of the game for the player.
-
-    Attributes:
-        _model: An private attribute of an instance of the model to be viewed.
     """
 
     def __init__(self, model) -> None:
         """
-        Initializes the model to be viewed.
+        Initializes attributes that will be used to
+        display the model
 
         Args:
-            model: An instance of the Model class.
+            model: An instance of the Model class
+
+        Attributes:
+            _model: An instance of Model class
+            _background_sound: pygame.mixer.Sound() that
+                is the background music of the game
+            _end_sound: pygame.mixer.Sound() that is the
+                end screen sound effect played
+            _easy_button: An instance of the Button class
+                that represents the button on the menu screen
+                that is used to select easy mode
+            _medium_button: An instance of the Button class
+                that represents the button on the menu screen
+                that is used to select medium mode
+            _hard_button: An instance of the Button class
+                that represents the button on the menu screen
+                that is used to select hard mode
+            _rocket_move_sprite: A pygame.Surface() that represents
+                the rocket jumping sprite
         """
         self._model = model
         self._background_sound = pygame.mixer.Sound(
@@ -66,11 +82,11 @@ class View:
 
     def draw_game(self, display_surface):
         """
-        Draws a display for the user to view
+        Draws game screen for the user to view
 
         Args:
-            display_surface: A surface object representing the window
-                to view.
+            display_surface: A pygame.display representing the window
+                to view
         """
         display_surface.fill((0, 0, 0))
         for platform in self._model.platforms:
@@ -89,7 +105,7 @@ class View:
         Draws the timer for the user to view during gameplay
 
         Args:
-            display_surface: A surface object representing the window
+            display_surface: A A pygame.display object representing the window
                 to view.
         """
         timer_text = FONT.render(time, True, (255, 255, 255))
@@ -100,8 +116,8 @@ class View:
         Draws the score onto the display
 
         Args:
-            display_surface: A surface object representing the window
-                to view.
+            display_surface: A pygame.display representing the window
+                to view
         """
         score_text = FONT.render(
             f"SCORE: {self._model.score}", True, (255, 255, 255)
@@ -113,7 +129,7 @@ class View:
         Draws the game over display for the user to view
 
         Args:
-            display_surface: A surface object representing the window
+            display_surface: A A pygame.display object representing the window
                 to view.
         """
         display_surface.fill((0, 0, 0))
@@ -200,11 +216,11 @@ class Button:
 
     def display(self, display_surface):
         """
-        Displays the button and text onto a surface to view.
+        Draws a buttons for the user to view
 
         Args:
-            display_surface: A A surface object representing the area
-                to view the button on.
+            display_surface: A pygame.display representing the window
+                to view.
         """
         display_surface.blit(self._button_surf, self._button_rect)
         display_surface.blit(self._text_surf, self._text_rect)

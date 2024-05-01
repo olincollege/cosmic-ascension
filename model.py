@@ -629,6 +629,17 @@ class Player:
         return self._position
 
     @property
+    def image(self):
+        """
+        Returns the image sprite surface of the player
+
+        Return:
+            pygame.Surface() that is the sprite of the
+            player
+        """
+        return self._image
+
+    @property
     def rect(self):
         """
         Allows the rectangle object of the player to be accessed

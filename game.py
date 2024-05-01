@@ -54,11 +54,8 @@ class Game:
         """
         Controls the scrolling to follow the sprite's progression
 
-        Args:
-            none
-
         Returns:
-            A bool representing if the camera needs to move or not.
+            A bool representing if the camera needs to move or not
         """
         if self._model.player.rect.top <= HEIGHT / 3:
             new_position_y = self._model.player.position.y + abs(
@@ -80,18 +77,16 @@ class Game:
     def start(self):
         """
         Dictates the start of game play.
-
-        Args:
-            none
         """
+        # Handles the start menu
         difficulty = 0
         while difficulty == 0:
             difficulty = self._controller.update_menu()
             self._view.draw_menu(self._screen)
             pygame.display.update()
 
+        # Handles game screen
         self._model.set_difficulty(difficulty)
-
         current_time = 0
         can_increase_score = True
         while not self._model.game_over and self._timer > 0:
@@ -117,6 +112,7 @@ class Game:
             self._view.draw_timer(time, self._screen)
             pygame.display.update()
 
+        # Handles end screen
         self._view.draw_game_over(self._screen)
         while True:
             self._controller.update_game_over()
