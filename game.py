@@ -19,23 +19,23 @@ HEIGHT = 450
 class Game:
     """
     Creates a full iteration of the game, including scrolling.
-
-    Attributes:
-        _clock: A pygame Clock object representing how long the game
-            has been running.
-        _fps: An int representing the frames per second
-        _screen: A pygame display representing the game window.
-        _controller: An instance of the controller class.
-        _model: An instance of the model class.
-        _view: An instance of the view class.
     """
 
     def __init__(self) -> None:
         """
         Initializes game attributes.
 
-        Args:
-            none
+        Attributes:
+            _clock: A pygame Clock object representing how long the game
+                has been running
+            _fps: An int representing the frames per second
+            _timer: An int that represents how many frames to count
+                down from. In this case, we want a timer to count
+                down from 60 seconds
+            _screen: A pygame display representing the game window
+            _model: An instance of the model class
+            _view: An instance of the view class
+            _controller: An instance of the controller class
         """
         self._clock = pygame.time.Clock()
         self._fps = 60
@@ -52,11 +52,8 @@ class Game:
         """
         Controls the scrolling to follow the sprite's progression
 
-        Args:
-            none
-
         Returns:
-            A bool representing if the camera needs to move or not.
+            A bool representing if the camera needs to move or not
         """
         if self._model.player.rect.top <= HEIGHT / 3:
             new_position_y = self._model.player.position.y + abs(
@@ -78,18 +75,16 @@ class Game:
     def start(self):
         """
         Dictates the start of game play.
-
-        Args:
-            none
         """
+        # Handles the start menu
         difficulty = 0
         while difficulty == 0:
             difficulty = self._controller.update_menu()
             self._view.draw_menu(self._screen)
             pygame.display.update()
 
+        # Handles game screen
         self._model.set_difficulty(difficulty)
-
         current_time = 0
         can_increase_score = True
         while not self._model.game_over and self._timer > 0:
@@ -115,6 +110,7 @@ class Game:
             self._view.draw_timer(time, self._screen)
             pygame.display.update()
 
+        # Handles end screen
         self._view.draw_game_over(self._screen)
         while True:
             self._controller.update_game_over()
