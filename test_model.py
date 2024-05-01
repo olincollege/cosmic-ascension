@@ -16,16 +16,13 @@ Not tested:
 
 import pygame
 import pytest
-from model import Model, Player
+from model import Model, Player, Platform
 
 pygame.init()
 VECTOR = pygame.math.Vector2
 
 # Test cases for Model
 
-model_update = []
-
-model_platform_generation = []
 
 model_check_player_off_screen = [
     # Window is width 400 height 450
@@ -81,7 +78,27 @@ def test_check_player_off_screen(position, end_game):
     assert isinstance(exp_output, bool)
     assert exp_output == end_game
 
+def test_platform_generation_easy():
+    """
+    Checks that all platforms generated are on screen in easy
+    difficulty
+    """
+    # Set ground this is the same across all game modes
+    ground = Platform(surf=pygame.Surface((200, 20)), center=(200, 445))
+    platforms = pygame.sprite.Group()
+    platforms.add(ground)
 
+    instance = Model(platforms, 400, 450)
+    instance.platform_generation()
+
+    for i in range(1, len(instance.platforms)):
+        assert instance.platforms.sprites()[i].rect.left >= 0
+        assert instance.platforms.sprites()[i].rect.right <= 400
+
+# test each game mode platform not on top of each other
+# test each game mode platform reachable. Check height is under
+# max height and distance is within max x travel
+    
 # Player test cases
 
 player_move = [
