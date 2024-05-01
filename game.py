@@ -35,9 +35,6 @@ class Game:
     def __init__(self) -> None:
         """
         Initializes game attributes.
-
-        Args:
-            none
         """
         self._clock = pygame.time.Clock()
         self._fps = 60

@@ -24,11 +24,8 @@ class Controller:
         """
         Initializes attributes that store what the player is doing
 
-        Attributes:
-            _jumping: A bool representing whether the character is jumping
-                or not
-            _left_right: A float representing the horizontal acceleration of the
-                character
+        Args:
+            view: View class instance that represents the view of the game
         """
         self._view = view
         self._jumping = False

@@ -16,6 +16,24 @@ FONT = pygame.font.Font("Font/PressStart2P-Regular.ttf", 15)
 class View:
     """
     Creates the view of the game for the player.
+
+    Attributes:
+        _model: An instance of Model class
+        _background_sound: pygame.mixer.Sound() that
+            is the background music of the game
+        _end_sound: pygame.mixer.Sound() that is the
+            end screen sound effect played
+        _easy_button: An instance of the Button class
+            that represents the button on the menu screen
+            that is used to select easy mode
+        _medium_button: An instance of the Button class
+            that represents the button on the menu screen
+            that is used to select medium mode
+        _hard_button: An instance of the Button class
+            that represents the button on the menu screen
+            that is used to select hard mode
+        _rocket_move_sprite: A pygame.Surface() that represents
+            the rocket jumping sprite
     """
 
     def __init__(self, model) -> None:
@@ -25,24 +43,6 @@ class View:
 
         Args:
             model: An instance of the Model class
-
-        Attributes:
-            _model: An instance of Model class
-            _background_sound: pygame.mixer.Sound() that
-                is the background music of the game
-            _end_sound: pygame.mixer.Sound() that is the
-                end screen sound effect played
-            _easy_button: An instance of the Button class
-                that represents the button on the menu screen
-                that is used to select easy mode
-            _medium_button: An instance of the Button class
-                that represents the button on the menu screen
-                that is used to select medium mode
-            _hard_button: An instance of the Button class
-                that represents the button on the menu screen
-                that is used to select hard mode
-            _rocket_move_sprite: A pygame.Surface() that represents
-                the rocket jumping sprite
         """
         self._model = model
         self._background_sound = pygame.mixer.Sound(
