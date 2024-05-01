@@ -10,7 +10,7 @@ Cosmic Ascension is a single player, platformer video game. The player controls 
 
 `Left arrow = Move left`
 `Right arrow = Move right`
-`Space bar = Jump`
+`Space bar and Up arrow = Jump`
 
 ## Playing the game
 
