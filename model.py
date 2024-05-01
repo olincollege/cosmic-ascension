@@ -151,10 +151,8 @@ class Model:
             # Calculate how far player can move in that time
             max_x_distance = int(velocity_x_max * fall_time)
 
-            # Generate new platform dimensions
-            surf = pygame.Surface((random.randint(50, 100), 15))
-            new_platform_width = surf.get_width()
-            new_platform_height = surf.get_height()
+            # Accounting for difficulty level
+            max_x_distance = max_x_distance * self._game_difficulty
 
             # Accounting for take off and landing of player. Gives
             # more leeway at higher difficult to account for reaction
@@ -164,8 +162,10 @@ class Model:
                 self._player.rect.width * 1.5 * self._game_difficulty
             )
 
-            # Accounting for difficulty level
-            max_x_distance = max_x_distance * self._game_difficulty
+            # Generate new platform dimensions
+            surf = pygame.Surface((random.randint(50, 100), 15))
+            new_platform_width = surf.get_width()
+            new_platform_height = surf.get_height()
 
             # Calculate maximum reachable range
             max_left = int(left - max_x_distance)
@@ -207,8 +207,6 @@ class Model:
             center_platform = (new_platform_center_x, new_platform_center_y)
             platform = Platform(surf, center_platform)
             self._platforms.add(platform)
-            assert platform.rect.left >= 0
-            assert platform.rect.right <= 400
 
     def calculate_range_player_reach_max_height(self, max_left, max_right):
         """
@@ -289,18 +287,19 @@ class Model:
         else:
             is_left = False
         half_width = math.ceil(new_platform_width / 2)
-
         # Calculate center of new platform
-        if x_landing < half_width:
-            new_platform_center_x = half_width
-        elif x_landing > (self._screen_width - half_width):
-            new_platform_center_x = self._screen_width - half_width
+        if is_left:
+            new_platform_center_x = x_landing + half_width
         else:
-            if is_left:
-                new_platform_center_x = x_landing + half_width
-            else:
-                new_platform_center_x = x_landing - half_width
-        return new_platform_center_x
+            new_platform_center_x = x_landing - half_width
+
+        # If the center is out of bounds, set it so its within bounds
+        if new_platform_center_x - half_width < 0:
+            new_platform_center_x = half_width
+        if new_platform_center_x + half_width > self._screen_width:
+            new_platform_center_x = self._screen_width - half_width
+
+        return int(new_platform_center_x)
 
     def calculate_platform_center_y(
         self,
