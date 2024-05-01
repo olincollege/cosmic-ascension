@@ -208,7 +208,7 @@ class Button:
         self._button_color = (210, 210, 210)
         self._button_surf = pygame.Surface((self._width, self._height))
         self._button_surf.fill(self._button_color)
-        self._button_rect = self._button_surf.get_rect(top_left=self._top_left)
+        self._button_rect = self._button_surf.get_rect(topleft=self._top_left)
         self._text_surf = FONT.render(self._text, True, self._text_color)
         self._text_rect = self._text_surf.get_rect(
             center=self._button_rect.center
