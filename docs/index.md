@@ -29,7 +29,7 @@ The character sprite is controlled with 3 keyboard keys.
 
 **Right arrow for moving right**
 
-**Space bar to jump**
+**Space bar or Up arrow to jump**
 
 Authors
 -------
