@@ -89,8 +89,7 @@ class Controller:
     def jumping(self):
         """
         Returns the jumping bool as a private attribute
-        Args:
-            none
+
         Returns:
             If the player is jumping or not as boolean
         """
@@ -100,8 +99,7 @@ class Controller:
     def left_right(self):
         """
         Returns the horizontal movement as a private attribute
-        Args:
-            none
+
         Returns:
             The horizontal acceleration of the character as a float
         """

@@ -262,13 +262,11 @@ class Model:
             int(max_right - (full_range / 2) * (1 - self._game_difficulty)) - 1
         )
         # Calculate landing x value
-        x_landing = random.choice(
-            [
-                i
-                for i in range(max_left, max_right)
-                if i not in range(minimum_left_x, minimum_right_x)
-            ]
-        )
+        x_landing = random.choice([
+            i
+            for i in range(max_left, max_right)
+            if i not in range(minimum_left_x, minimum_right_x)
+        ])
         return x_landing
 
     def calculate_platform_center_x(
@@ -371,9 +369,6 @@ class Model:
     def increase_score(self):
         """
         Increases the private attribute _score by 1
-
-        Args:
-            none
         """
         self._score += 1
 
@@ -534,9 +529,6 @@ class Player:
     def update(self):
         """
         Updates the character rect based on position
-
-        Args:
-            none
         """
         self._rect = self._image.get_rect(center=self._position)
 
@@ -585,9 +577,6 @@ class Player:
         Returns the players jump velocity, dependent on
         whether or not player is jumping
 
-        Args:
-            none
-
         Returns:
             _velocity as an int representing the y
             velocity the player is set to when jumping
@@ -599,9 +588,6 @@ class Player:
         """
         Allows the acceleration of player to be accessed
 
-        Args:
-            none
-
         Returns:
             _acceleration of player in form of float
         """
@@ -612,9 +598,6 @@ class Player:
         """
         Allows the velocity of player to be accessed
 
-        Args:
-            none
-
         Returns
             _velocity of player in form of float
         """
@@ -624,9 +607,6 @@ class Player:
     def position(self):
         """
         Allows the position of the player to be accessed
-
-        Args:
-            none
 
         Returns:
             The _position attribute of the model.
@@ -648,9 +628,6 @@ class Player:
     def rect(self):
         """
         Allows the rectangle object of the player to be accessed
-
-        Args:
-            none
 
         Returns:
             The _rect attribute of the model.
