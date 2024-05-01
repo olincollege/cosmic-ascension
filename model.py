@@ -27,29 +27,30 @@ class Model:
             width: int representing the width of the display
                 screen
             height: int representing the height of the display
-                screen    Attributes:
-        _gravity: pygame.math.Vector2 that represents
-            the gravity in the game
-        _friction: An float representing the friction
-             associated
-            with the characters interactions with
+                screen
+        Attributes:
+            _gravity: pygame.math.Vector2 that represents
+                the gravity in the game
+            _friction: A float representing the friction
+                associated with the characters interactions with
                 objects in game.
-        _player: An instance of the Player class
-            representing the player character
-        _platform_num: An int representing the max
-            number of platforms generated at any given time
-        _platforms: pygame.sprite.Group() of platforms
-            in the game
-        _game_difficulty: An int representing the difficulty
-            of the game. 1 is the max difficulty, 0.5 is the
-            game's easy mode, and 0.75 is the game's medium
-        _score: int representing the score of the game
-        _screen_width: int representing the width of the
-            display screen
-        _screen_height: int representing the height of the
-            display screen
-        _game_over: a boolian representing if player is on game over screen
-        _jump_sound: wav file for the sound of the rockets when character jumps
+            _player: An instance of the Player class
+                representing the player character
+            _platform_num: An int representing the max
+                number of platforms generated at any given time
+            _platforms: pygame.sprite.Group() of platforms
+                in the game
+            _game_difficulty: An int representing the difficulty
+                of the game. 1 is the max difficulty, 0.5 is the
+                game's easy mode, and 0.75 is the game's medium
+            _score: int representing the score of the game
+            _screen_width: int representing the width of the
+                display screen
+            _screen_height: int representing the height of the
+                display screen
+            _game_over: a boolian representing if player is on game over screen
+            _jump_sound: wav file for the sound of the rockets when character 
+                jumps
         """
         self._gravity = VECTOR(0, 0.35)
         self._friction = 0.12
@@ -258,13 +259,11 @@ class Model:
             int(max_right - (full_range / 2) * (1 - self._game_difficulty)) - 1
         )
         # Calculate landing x value
-        x_landing = random.choice(
-            [
-                i
-                for i in range(max_left, max_right)
-                if i not in range(minimum_left_x, minimum_right_x)
-            ]
-        )
+        x_landing = random.choice([
+            i
+            for i in range(max_left, max_right)
+            if i not in range(minimum_left_x, minimum_right_x)
+        ])
         return x_landing
 
     def calculate_platform_center_x(
@@ -480,21 +479,6 @@ class Player:
     """
     A class to generate and dictate actions of the game
     character sprite.
-
-    Attributes:
-        _gravity: A vector representing the acceleration associated
-            with gravity that acts on the character.
-        _friction: An int representing the value friction associated
-            with the characters interactions with objects in game.
-        _acceleration: A vector representing the acceleration
-            acting on the character in any direction.
-        _velocity: A vector representing the velocity of the character.
-        _position: A vector representing the position of the character in
-            the game window.
-        _surf: A pygame surface object that acts as a platform
-            in gameplay.
-        _rect: A rectangle object representing the area that
-            the platform occupies.
     """
 
     def __init__(self, gravity, friction) -> None:
@@ -502,10 +486,27 @@ class Player:
         Initializes the character.
 
         Args:
-            gravity: A vector representing the acceleration
-                on a character due to gravity.
-            friction: An int representing the friction between character
-                and platforms.
+            gravity: A pygame.math.Vector2() that stores the gravity of
+                the game
+            friction: A float representing the friction between character
+                and platforms
+        Attributes:
+            _gravity: A pygame.math.Vector2() that stores the gravity of
+                the game
+            _friction: An int representing the value friction associated
+                with the characters interactions with objects in game
+            _jump_velocity: An int representing the jump velocity of
+                the player
+            _acceleration: A pygame.math.Vector2() representing the
+                acceleration acting on the character in any direction.
+            _velocity: A pygame.math.Vector2() representing the current
+                velocity of the character
+            _position: A pygame.math.Vector2() representing the position
+                of the character in the game
+            _image: A pygame.Surface() object that represents the default
+                surface size of the player
+            _rect: A pygame.Rect() object that represents the player sprite
+                hitbox
         """
         self._gravity = gravity
         self._friction = friction
@@ -527,10 +528,7 @@ class Player:
 
     def update(self):
         """
-        Updates the character surface, shape, and color.
-
-        Args:
-            none
+        Updates the character rect based on position
         """
         self._rect = self._image.get_rect(center=self._position)
 
@@ -580,7 +578,8 @@ class Player:
         whether or not player is jumping
 
         Returns:
-            float representing the vertical velocity
+            _velocity as an int representing the y
+            velocity the player is set to when jumping
         """
         return self._jump_velocity
 
@@ -590,7 +589,7 @@ class Player:
         Returns the acceleration of player
 
         Returns:
-            Acceleration of player in form of float
+            _acceleration of player in form of float
         """
         return self._acceleration
 
@@ -600,28 +599,26 @@ class Player:
         Returns the velocity of player
 
         Returns
-            Velocity of player in form of float
+            _velocity of player in form of float
         """
         return self._velocity
 
     @property
     def position(self):
         """
-        Returns the position as a private attribute
-        Args:
-            none
+        Returns the position of the player
+
         Returns:
-            The position attribute of the model.
+            The _position attribute of the model.
         """
         return self._position
 
     @property
     def rect(self):
         """
-        Returns the rectangle object as a private attribute
-        Args:
-            none
+        Returns the rectangle object of the player
+
         Returns:
-            The rectangle attribute of the model.
+            The _rect attribute of the model.
         """
         return self._rect
