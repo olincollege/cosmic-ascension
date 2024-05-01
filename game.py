@@ -35,6 +35,9 @@ class Game:
     def __init__(self) -> None:
         """
         Initializes game attributes.
+
+        Args:
+            none
         """
         self._clock = pygame.time.Clock()
         self._fps = 60
@@ -50,6 +53,9 @@ class Game:
     def camera(self):
         """
         Controls the scrolling to follow the sprite's progression
+
+        Args:
+            none
 
         Returns:
             A bool representing if the camera needs to move or not
@@ -74,6 +80,9 @@ class Game:
     def start(self):
         """
         Dictates the start of game play.
+
+        Args:
+            none
         """
         # Handles the start menu
         difficulty = 0

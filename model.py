@@ -111,6 +111,9 @@ class Model:
         """
         Checks if the player is off screen. If so,
         switches game to game over
+
+        Args:
+            none
         """
         if (
             self._player.position.x < 0
@@ -123,6 +126,9 @@ class Model:
     def platform_generation(self):
         """
         Controls generation of platforms during game play
+
+        Args:
+            none
 
         Note:
             The calculation for the platform distances are based off
@@ -370,6 +376,9 @@ class Model:
     def increase_score(self):
         """
         Increases the private attribute _score by 1
+
+        Args:
+            none
         """
         self._score += 1
 
@@ -377,6 +386,9 @@ class Model:
     def player(self):
         """
         Allows private attribute _player to be output
+
+        Args:
+            none
 
         Returns:
             The player attribute of the model.
@@ -388,6 +400,9 @@ class Model:
         """
         Allows private attribute platforms to be accessed
 
+        Args:
+            none
+
         Returns:
             The platforms attribute of the model.
         """
@@ -398,6 +413,9 @@ class Model:
         """
         Allows private attribute score to be accessed
 
+        Args:
+            none
+
         Returns:
             The score attribute
         """
@@ -407,6 +425,9 @@ class Model:
     def game_over(self):
         """
         Allows private attribute _game_over to be accessed
+
+        Args:
+            none
 
         Return:
             A boolean representing if game is over
@@ -459,6 +480,9 @@ class Platform(pygame.sprite.Sprite):
         """
         Allows private attribute _rect to be accessed
 
+        Args:
+            none
+
         Returns:
             The rectangle attribute of the model.
         """
@@ -468,6 +492,9 @@ class Platform(pygame.sprite.Sprite):
     def surf(self):
         """
         Allows private attribute _Surf to be accessed
+
+        Args:
+            none
 
         Returns:
             The surface attribute of the model.
@@ -530,6 +557,9 @@ class Player:
     def update(self):
         """
         Updates the character rect based on position
+
+        Args:
+            none
         """
         self._rect = self._image.get_rect(center=self._position)
 
@@ -578,6 +608,9 @@ class Player:
         Returns the players jump velocity, dependent on
         whether or not player is jumping
 
+        Args:
+            none
+
         Returns:
             _velocity as an int representing the y
             velocity the player is set to when jumping
@@ -589,6 +622,9 @@ class Player:
         """
         Allows the acceleration of player to be accessed
 
+        Args:
+            none
+
         Returns:
             _acceleration of player in form of float
         """
@@ -598,6 +634,9 @@ class Player:
     def velocity(self):
         """
         Allows the velocity of player to be accessed
+
+        Args:
+            none
 
         Returns
             _velocity of player in form of float
@@ -609,6 +648,9 @@ class Player:
         """
         Allows the position of the player to be accessed
 
+        Args:
+            none
+
         Returns:
             The _position attribute of the model.
         """
@@ -618,6 +660,9 @@ class Player:
     def image(self):
         """
         Returns the image sprite surface of the player
+
+        Args:
+            none
 
         Return:
             pygame.Surface() that is the sprite of the
@@ -630,7 +675,11 @@ class Player:
         """
         Allows the rectangle object of the player to be accessed
 
+        Args:
+            none
+
         Returns:
-            The _rect attribute of the model.
+            The _rect private attribute of the model, pygame.Surface
+            object
         """
         return self._rect

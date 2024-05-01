@@ -35,6 +35,9 @@ class Controller:
         """
         Updates what happens in menu based on player input
 
+        Args:
+            none
+
         Return:
             A float representing the difficulty of the game.
             A difficulty of 1 is the hardest
@@ -56,6 +59,9 @@ class Controller:
     def update_game(self):
         """
         Updates the actions of the player based player input
+
+        Args:
+            none
         """
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -79,6 +85,9 @@ class Controller:
     def update_game_over(self):
         """
         Updates the what happens in game over screen
+
+        Args:
+            none
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -88,19 +97,27 @@ class Controller:
     @property
     def jumping(self):
         """
-        Returns the jumping bool as a private attribute
+        Allows the jumping bool private attribute to be accessed
+
+        Args:
+            none
 
         Returns:
-            If the player is jumping or not as boolean
+            If the player is jumping or not as boolean, private
+            attribute _jumping
         """
         return self._jumping
 
     @property
     def left_right(self):
         """
-        Returns the horizontal movement as a private attribute
+        Allows the left_right float private attribute to be accessed
+
+        Args:
+            none
 
         Returns:
-            The horizontal acceleration of the character as a float
+            The horizontal acceleration of the character as a float,
+            private attribute _left_right
         """
         return self._left_right

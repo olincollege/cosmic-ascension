@@ -230,6 +230,9 @@ class Button:
         """
         Allows private attribute _button_rect to be output
 
+        Args:
+            none
+
         Return:
             Private attribute _button_rect which is of pygame.Rect()
         """

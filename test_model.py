@@ -84,7 +84,10 @@ def test_platform_generation_easy():
     """
     Checks that all platforms generated are on screen in easy
     difficulty, that no platforms collide with each other, and
-    all platforms are reachable
+    all platforms are reachable.
+
+    Args:
+        none
     """
     # Set ground this is the same across all game modes
     ground = Platform(surf=pygame.Surface((200, 20)), center=(200, 445))
@@ -177,6 +180,9 @@ def test_platform_generation_medium():
     Checks that all platforms generated are on screen in medium
     difficulty, that no platforms collide with each other, and
     all platforms are reachable
+
+    Args:
+        none
     """
     # Set ground this is the same across all game modes
     ground = Platform(surf=pygame.Surface((200, 20)), center=(200, 445))
@@ -269,6 +275,9 @@ def test_platform_generation_hard():
     Checks that all platforms generated are on screen in hard
     difficulty, that no platforms collide with each other, and
     all platforms are reachable
+
+    Args:
+        none
     """
     # Set ground this is the same across all game modes
     ground = Platform(surf=pygame.Surface((200, 20)), center=(200, 445))
