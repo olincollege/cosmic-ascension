@@ -19,23 +19,25 @@ HEIGHT = 450
 class Game:
     """
     Creates a full iteration of the game, including scrolling.
+
+    Attributes:
+        _clock: A pygame Clock object representing how long the game
+            has been running.
+        _fps: An int representing the frames per second
+        _timer: An int representing the time limit for the game.
+        _screen: A pygame display representing the game window.
+        _controller: An instance of the controller class.
+        _model: An instance of the model class.
+        _view: An instance of the view class.
+        _controller: An instance of the controller class.
     """
 
     def __init__(self) -> None:
         """
         Initializes game attributes.
 
-        Attributes:
-            _clock: A pygame Clock object representing how long the game
-                has been running
-            _fps: An int representing the frames per second
-            _timer: An int that represents how many frames to count
-                down from. In this case, we want a timer to count
-                down from 60 seconds
-            _screen: A pygame display representing the game window
-            _model: An instance of the model class
-            _view: An instance of the view class
-            _controller: An instance of the controller class
+        Args:
+            none
         """
         self._clock = pygame.time.Clock()
         self._fps = 60

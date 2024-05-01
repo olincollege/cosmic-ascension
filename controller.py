@@ -11,6 +11,13 @@ import pygame
 class Controller:
     """
     Dictates actions to be completed based on specified user inputs.
+
+    Attributes:
+        _jumping: A bool representing whether the character is jumping
+            or not.
+        _left_right: A float representing the horizontal acceleration of the
+            character.
+        _view: An instance of the view class for Controller to modify
     """
 
     def __init__(self, view) -> None:

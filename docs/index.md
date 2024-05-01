@@ -17,7 +17,7 @@ To run our program and play the game, first clone the repository at the followin
 
 [Cosmic Ascension Repo](https://github.com/olincollege/cosmic-ascension)
 
-Additionally, install Pygame by running **pip install pygame** in your terminal.
+Additionally, install Pygame by running **pip install pygame** in your terminal. Then install sound effects with the command **sudo apt install pulseaudio**.
 
 Finally, play the game by running the **main.py** file.
 

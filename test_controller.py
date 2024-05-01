@@ -1,7 +1,11 @@
-from controller import Controller
+"""
+This module contains unit tests for the classes in controller.py
+"""
+
 import pygame
 import pytest
-from pygame.locals import *
+from controller import Controller
+
 
 # Test cases
 
