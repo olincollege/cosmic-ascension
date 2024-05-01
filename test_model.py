@@ -23,8 +23,6 @@ VECTOR = pygame.math.Vector2
 
 # Test cases for Model
 
-model_update = []
-
 model_platform_generation = []
 
 model_check_player_off_screen = [
