@@ -16,17 +16,33 @@ FONT = pygame.font.Font("Font/PressStart2P-Regular.ttf", 15)
 class View:
     """
     Creates the view of the game for the player.
-
-    Attributes:
-        _model: An private attribute of an instance of the model to be viewed.
     """
 
     def __init__(self, model) -> None:
         """
-        Initializes the model to be viewed.
+        Initializes attributes that will be used to 
+        display the model
 
         Args:
-            model: An instance of the Model class.
+            model: An instance of the Model class
+        
+        Attributes:
+            _model: An instance of Model class
+            _background_sound: pygame.mixer.Sound() that
+                is the background music of the game
+            _end_sound: pygame.mixer.Sound() that is the
+                end screen sound effect played
+            _easy_button: An instance of the Button class
+                that represents the button on the menu screen
+                that is used to select easy mode
+            _medium_button: An instance of the Button class
+                that represents the button on the menu screen
+                that is used to select medium mode
+            _hard_button: An instance of the Button class
+                that represents the button on the menu screen
+                that is used to select hard mode
+            _rocket_move_sprite: A pygame.Surface() that represents
+                the rocket jumping sprite
         """
         self._model = model
         self._background_sound = pygame.mixer.Sound(
@@ -53,6 +69,13 @@ class View:
         )
 
     def draw_menu(self, displaysurface):
+        """
+        Draws menu screen for the user to view
+
+        Args:
+            displaysurface: A pygame.display representing the window
+                to view
+        """
         displaysurface.fill((0, 0, 0))
         self._easy_button.display(displaysurface)
         self._medium_button.display(displaysurface)
@@ -60,11 +83,11 @@ class View:
 
     def draw_game(self, displaysurface):
         """
-        Draws a display for the user to view
+        Draws game screen for the user to view
 
         Args:
-            displaysurface: A surface object representing the window
-                to view.
+            displaysurface: A pygame.display representing the window
+                to view
         """
         displaysurface.fill((0, 0, 0))
         for platform in self._model.platforms:
@@ -75,10 +98,17 @@ class View:
             )
         else:
             displaysurface.blit(
-                self._model.player._image, self._model.player.rect
+                self._model.player.image, self._model.player.rect
             )
 
     def draw_timer(self, time, displaysurface):
+        """
+        Draws the timer onto the display
+
+        Args:
+            displaysurface: A pygame.display representing the window
+                to view
+        """
         timer_text = FONT.render(time, True, (255, 255, 255))
         displaysurface.blit(timer_text, timer_text.get_rect(center=(200, 50)))
 
@@ -87,8 +117,8 @@ class View:
         Draws the score onto the display
 
         Args:
-            displaysurface: A surface object representing the window
-                to view.
+            displaysurface: A pygame.display representing the window
+                to view
         """
         score_text = FONT.render(
             f"SCORE: {self._model.score}", True, (255, 255, 255)
@@ -96,6 +126,13 @@ class View:
         displaysurface.blit(score_text, (10, 10))
 
     def draw_game_over(self, displaysurface):
+        """
+        Draws game over for the user to view
+
+        Args:
+            displaysurface: A pygame.display representing the window
+                to view
+        """
         displaysurface.fill((0, 0, 0))
         game_over = FONT.render("GAME OVER", True, (255, 255, 255))
         score_text = FONT.render(
@@ -138,7 +175,38 @@ class View:
 
 
 class Button:
+    """
+    Creates a the view for a button in the game
+    """
     def __init__(self, topleft, text) -> None:
+        """
+        Initializes attributes that will be used to 
+        display the button
+
+        Attributes:
+            _topleft: A tuple representing the topleft
+                coordinate of the button
+            _text: A string representing the text to be displayed
+                on the button
+            _text_color: A tuple representing the RGB value of the 
+                color the text of the button will be. This value
+                will be set to (0, 0, 0)
+            _width: An int representing the width of the button.
+                This value will be set to 100
+            _height: An int representing the height of the button
+                This value will be set to 50
+            _button_color: A tuple representing the RGB value of the
+                color of the button. This value will be set to 
+                (210, 210, 210)
+            _button_surf: A pygame.Surface() that represents the surface
+                of the button
+            _button_rect: A pygame.Rect() that represents the hitbox of 
+                the button
+            _text_surf: A pygame.Surface() that represents the surface
+                of the button text
+            _text_rect: A pygame.Rect() that represents the position of
+                the text of the button
+        """
         self._topleft = topleft
         self._text = text
         self._text_color = (0, 0, 0)
@@ -154,6 +222,13 @@ class Button:
         )
 
     def display(self, displaysurface):
+        """
+        Draws a buttons for the user to view
+
+        Args:
+            displaysurface: A pygame.display representing the window
+                to view.
+        """
         displaysurface.blit(self._button_surf, self._button_rect)
         displaysurface.blit(self._text_surf, self._text_rect)
 
