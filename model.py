@@ -15,20 +15,8 @@ class Model:
     """
     Class that acts as Model part of MVC architecture.
     Updates the data related to the game play.
-    """
 
-    def __init__(self, platforms, width, height) -> None:
-        """
-        Initializes the model.
-
-        Args:
-            platforms: pygame.sprite.Group() representing the
-                current platforms in the game
-            width: int representing the width of the display
-                screen
-            height: int representing the height of the display
-                screen
-        Attributes:
+    Attributes:
             _gravity: pygame.math.Vector2 that represents
                 the gravity in the game
             _friction: A float representing the friction
@@ -48,9 +36,22 @@ class Model:
                 display screen
             _screen_height: int representing the height of the
                 display screen
-            _game_over: a boolian representing if player is on game over screen
-            _jump_sound: wav file for the sound of the rockets when character 
+            _game_over: a boolean representing if player is on game over screen
+            _jump_sound: wav file for the sound of the rockets when character
                 jumps
+    """
+
+    def __init__(self, platforms, width, height) -> None:
+        """
+        Initializes the model.
+
+        Args:
+            platforms: pygame.sprite.Group() representing the
+                current platforms in the game
+            width: int representing the width of the display
+                screen
+            height: int representing the height of the display
+                screen
         """
         self._gravity = VECTOR(0, 0.35)
         self._friction = 0.12
@@ -259,11 +260,13 @@ class Model:
             int(max_right - (full_range / 2) * (1 - self._game_difficulty)) - 1
         )
         # Calculate landing x value
-        x_landing = random.choice([
-            i
-            for i in range(max_left, max_right)
-            if i not in range(minimum_left_x, minimum_right_x)
-        ])
+        x_landing = random.choice(
+            [
+                i
+                for i in range(max_left, max_right)
+                if i not in range(minimum_left_x, minimum_right_x)
+            ]
+        )
         return x_landing
 
     def calculate_platform_center_x(
@@ -281,10 +284,8 @@ class Model:
             center: A tuple representing the center of the old platform
         """
         # Check if player needs to jump left or right of current platform
-        if x_landing < center[0]:
-            is_left = True
-        else:
-            is_left = False
+
+        is_left = bool(x_landing < center[0])
 
         # Calculate center of new platform
         if x_landing < new_platform_width / 2:
@@ -365,6 +366,9 @@ class Model:
     def increase_score(self):
         """
         Increases the private attribute _score by 1
+
+        Args:
+            none
         """
         self._score += 1
 
@@ -381,7 +385,7 @@ class Model:
     @property
     def platforms(self):
         """
-        Allows private attribute platforms to be output
+        Allows private attribute platforms to be accessed
 
         Returns:
             The platforms attribute of the model.
@@ -391,7 +395,7 @@ class Model:
     @property
     def score(self):
         """
-        Allows private attribute score to be output
+        Allows private attribute score to be accessed
 
         Returns:
             The score attribute
@@ -401,7 +405,7 @@ class Model:
     @property
     def game_over(self):
         """
-        Allows private attribute _game_over to be ouput
+        Allows private attribute _game_over to be accessed
 
         Return:
             A boolean representing if game is over
@@ -414,10 +418,11 @@ class Platform(pygame.sprite.Sprite):
     Creates a platform for a sprite to interact with.
 
     Attributes:
-        _surf: A pygame surface object that acts as a platform
-            in gameplay.
-        _rect: A rectangle object representing the area that
-            the platform occupies.
+        _surf: A pygame.Surface() object that represents the surface of the
+            platform
+        _rect: A pygame.Rect() object that represents the rect of the
+            platform
+        _color: A tuple representing the RGB color of the platform
     """
 
     def __init__(self, surf, center, color=(128, 128, 128)) -> None:
@@ -429,12 +434,6 @@ class Platform(pygame.sprite.Sprite):
             center: A tuple representing the center of the platform location
             color: A tuple representing the platform RGB color code. Defaults to
                 (128, 128, 128).
-        Attributes:
-            _surf: A pygame.Surface() object that represents the surface of the
-                platform
-            _rect: A pygame.Rect() object that represents the rect of the
-                platform
-            _color: A tuple representing the RGB color of the platform
         """
         super().__init__()
         self._surf = surf
@@ -443,21 +442,21 @@ class Platform(pygame.sprite.Sprite):
         self._center = center
         self._rect = self._surf.get_rect(center=center)
 
-    def set_rect(self, x, y):
+    def set_rect(self, x_pos, y_pos):
         """
         Sets the rect of the platform.
 
         Args:
-            x: An int representing the x location of the platform sprite.
-            y: An int representing the y location of the platform sprite.
+            x_pos: An int representing the x location of the platform sprite.
+            y_pos: An int representing the y location of the platform sprite.
         """
-        self._rect.x = x
-        self._rect.y = y
+        self._rect.x = x_pos
+        self._rect.y = y_pos
 
     @property
     def rect(self):
         """
-        Allows private attribute _rect to be output
+        Allows private attribute _rect to be accessed
 
         Returns:
             The rectangle attribute of the model.
@@ -467,7 +466,7 @@ class Platform(pygame.sprite.Sprite):
     @property
     def surf(self):
         """
-        Allows private attribute _Surf to be output
+        Allows private attribute _Surf to be accessed
 
         Returns:
             The surface attribute of the model.
@@ -479,6 +478,24 @@ class Player:
     """
     A class to generate and dictate actions of the game
     character sprite.
+
+    Attributes:
+        _gravity: A pygame.math.Vector2() that stores the gravity of
+             the game
+        _friction: An int representing the value friction associated
+            with the characters interactions with objects in game
+        _jump_velocity: An int representing the jump velocity of
+            the player
+        _acceleration: A pygame.math.Vector2() representing the
+            acceleration acting on the character in any direction.
+        _velocity: A pygame.math.Vector2() representing the current
+            velocity of the character
+        _position: A pygame.math.Vector2() representing the position
+            of the character in the game
+        _image: A pygame.Surface() object that represents the default
+            surface size of the player
+        _rect: A pygame.Rect() object that represents the player sprite
+            hitbox
     """
 
     def __init__(self, gravity, friction) -> None:
@@ -490,23 +507,6 @@ class Player:
                 the game
             friction: A float representing the friction between character
                 and platforms
-        Attributes:
-            _gravity: A pygame.math.Vector2() that stores the gravity of
-                the game
-            _friction: An int representing the value friction associated
-                with the characters interactions with objects in game
-            _jump_velocity: An int representing the jump velocity of
-                the player
-            _acceleration: A pygame.math.Vector2() representing the
-                acceleration acting on the character in any direction.
-            _velocity: A pygame.math.Vector2() representing the current
-                velocity of the character
-            _position: A pygame.math.Vector2() representing the position
-                of the character in the game
-            _image: A pygame.Surface() object that represents the default
-                surface size of the player
-            _rect: A pygame.Rect() object that represents the player sprite
-                hitbox
         """
         self._gravity = gravity
         self._friction = friction
@@ -529,6 +529,9 @@ class Player:
     def update(self):
         """
         Updates the character rect based on position
+
+        Args:
+            none
         """
         self._rect = self._image.get_rect(center=self._position)
 
@@ -557,7 +560,7 @@ class Player:
         Dictates the motion of the player sprite.
 
         Args:
-            x_acceleration: An int representing horizontal
+            x_acceleration: A float representing horizontal
                 acceleration of the character.
         """
         self._acceleration = self._gravity
@@ -577,6 +580,9 @@ class Player:
         Returns the players jump velocity, dependent on
         whether or not player is jumping
 
+        Args:
+            none
+
         Returns:
             _velocity as an int representing the y
             velocity the player is set to when jumping
@@ -586,7 +592,10 @@ class Player:
     @property
     def acceleration(self):
         """
-        Returns the acceleration of player
+        Allows the acceleration of player to be accessed
+
+        Args:
+            none
 
         Returns:
             _acceleration of player in form of float
@@ -596,7 +605,10 @@ class Player:
     @property
     def velocity(self):
         """
-        Returns the velocity of player
+        Allows the velocity of player to be accessed
+
+        Args:
+            none
 
         Returns
             _velocity of player in form of float
@@ -606,7 +618,10 @@ class Player:
     @property
     def position(self):
         """
-        Returns the position of the player
+        Allows the position of the player to be accessed
+
+        Args:
+            none
 
         Returns:
             The _position attribute of the model.
@@ -616,7 +631,10 @@ class Player:
     @property
     def rect(self):
         """
-        Returns the rectangle object of the player
+        Allows the rectangle object of the player to be accessed
+
+        Args:
+            none
 
         Returns:
             The _rect attribute of the model.

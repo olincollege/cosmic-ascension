@@ -17,6 +17,7 @@ class Controller:
             or not.
         _left_right: A float representing the horizontal acceleration of the
             character.
+        _view: An instance of the view class for Controller to modify
     """
 
     def __init__(self, view) -> None:

@@ -24,10 +24,12 @@ class Game:
         _clock: A pygame Clock object representing how long the game
             has been running.
         _fps: An int representing the frames per second
+        _timer: An int representing the time limit for the game.
         _screen: A pygame display representing the game window.
         _controller: An instance of the controller class.
         _model: An instance of the model class.
         _view: An instance of the view class.
+        _controller: An instance of the controller class.
     """
 
     def __init__(self) -> None:
